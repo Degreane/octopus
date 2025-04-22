@@ -6,6 +6,7 @@ A Go-based server application.
 
 ### Prerequisites
 - Go 1.16+
+- Air (for hot reloading during development)
 
 ### Installation
 ```
@@ -17,5 +18,14 @@ go build ./cmd/server
 ### Running the server
 ```
 ./server
+```
+
+### Development with hot reloading
+```
+# Install Air globally (if not already installed)
+go install github.com/cosmtrek/air@latest
+
+# Run the application with Air
+air
 ```
 
