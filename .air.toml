@@ -4,7 +4,7 @@ tmp_dir = "tmp"
 
 [build]
 # Just plain old shell command. You could use "make" as well.
-cmd = "go build -o ./tmp/main ./cmd/server"
+cmd = "go mod tidy; go build -o ./tmp/main ./cmd/server"
 # Binary file yields from "cmd".
 bin = "tmp/main"
 # Customize binary.
