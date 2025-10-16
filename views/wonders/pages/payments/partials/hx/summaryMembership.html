@@ -1,0 +1,29 @@
+{{if gt $.amount 0}}
+    <div id="summaryMembership" class="flex justify-between mx-[19px] mt-[14px]">
+        <div class="text-[#054F85] text-[15px] font-Inter font-normal">PV Membership Fee</div>
+        <div class="text-[#054F85] text-[15px] font-Inter font-normal">{{$.amount}} eAI</div>
+        <input name="MembershipAmount" id="summaryMembershipAmount" type="hidden" value="{{$.amount}}">
+        <input name="MembershipPeriod" id="summaryMembershipPeriod" type="hidden" value="{{$.period}}">
+    </div>
+{{else}}
+    <div id="summaryMembership" class="hidden flex justify-between mx-[19px] mt-[14px]">
+        <div class="text-[#054F85] text-[15px] font-Inter font-normal">PV Membership Fee</div>
+        <div class="text-[#054F85] text-[15px] font-Inter font-normal">49 eAI</div>
+        <input name="MembershipAmount" id="summaryMembershipAmount" type="hidden" value="{{$.amount}}">
+        <input name="MembershipPeriod" id="summaryMembershipPeriod" type="hidden" value="{{$.period}}">
+    </div>
+{{end}}
+
+<div id="toBePaid" hx-swap-oob="outerHTML">{{FormatNumWithComma $.toBePaid 2}} USDT</div>
+
+<div id="totalFees" hx-swap-oob="outerHTML"
+     class="text-[#054F85] text-[20px] font-Inter font-normal">{{FormatNumWithComma $.totalFees 6}} eAI
+</div>
+<div id="swapFees" hx-swap-oob="outerHTML"
+     class="text-[#054F85] text-[15px] font-Inter font-normal">{{FormatNumWithComma $.swapFees 6}} eUSD
+</div>
+<div id="bridgeFees" hx-swap-oob="outerHTML"
+     class="text-[#054F85] text-[15px] font-Inter font-normal">{{FormatNumWithComma $.bridgeFees 6}} eUSD
+</div>
+
+<div id="summaryPruchaseFees" hx-swap-oob="outerHTML">{{FormatNumWithComma $.totalFees 6}} eAI</div>

@@ -1,0 +1,112 @@
+<div class="w-full border border-[#054F85] shadow-[inset_0px_0px_8px_0px_#054F85] rounded text-center font-Inter">
+    <div class="font-bold text-[15px] text-center w-full text-[#054F85] mt-[14px]">
+        Withdraw
+    </div>
+    <div class="flex mt-[11px] gap-[5px] justify-center font-Inter text-[15px]">
+        <div id="withdrawEgetyBtn"
+             class="bg-[#054F85] px-[19px] py-[5px] text-center rounded-[5px] text-white cursor-pointer"
+             hx-ext="htmx-set, htmx-ensure"
+             hx-set="#withdrawWalletAddress:att;;placeholder='Enter Egety Wallet Address',,
+                    #withdrawAmount:att;;placeholder='Enter Amount    Egety'"
+             hx-ensure="#withdrawEgetyAvailable:!hidden,
+             #withdrawEgetyBtn:text-white;!shadow-[inset_0px_0px_8px_0px_#00F0FF];!text-[#054F85];bg-[#054F85],
+             #withdrawEAIAvailable:hidden,
+             #withdrawEAIBtn:!text-white;shadow-[inset_0px_0px_8px_0px_#00F0FF];text-[#054F85];!bg-[#054F85],
+             #withdrawTRXAvailable:hidden,
+             #withdrawTRXBtn:!text-white;shadow-[inset_0px_0px_8px_0px_#00F0FF];text-[#054F85];!bg-[#054F85],
+             #withdrawUSDTAvailable:hidden,
+             #withdrawUSDTBtn:!text-white;shadow-[inset_0px_0px_8px_0px_#00F0FF];text-[#054F85];!bg-[#054F85],
+             #withdrawEgetyNetwork:!hidden,#withdrawTRC20Network:hidden"
+        >Egety
+        </div>
+        <div id="withdrawEAIBtn"
+             class="shadow-[inset_0px_0px_8px_0px_#00F0FF] text-[#054F85] px-[19px] py-[5px] text-center rounded-[5px] cursor-pointer"
+             hx-ext="htmx-set, htmx-ensure"
+             hx-set="#withdrawWalletAddress:att;;placeholder='Enter Egety Wallet Address',,
+                    #withdrawAmount:att;;placeholder='Enter Amount    eAI'"
+             hx-ensure="#withdrawEgetyAvailable:hidden,
+             #withdrawEgetyBtn:!text-white;shadow-[inset_0px_0px_8px_0px_#00F0FF];text-[#054F85];!bg-[#054F85],
+             #withdrawEAIAvailable:!hidden,
+             #withdrawEAIBtn:text-white;!shadow-[inset_0px_0px_8px_0px_#00F0FF];!text-[#054F85];bg-[#054F85],
+             #withdrawTRXAvailable:hidden,
+             #withdrawTRXBtn:!text-white;shadow-[inset_0px_0px_8px_0px_#00F0FF];text-[#054F85];!bg-[#054F85],
+             #withdrawUSDTAvailable:hidden,
+             #withdrawUSDTBtn:!text-white;shadow-[inset_0px_0px_8px_0px_#00F0FF];text-[#054F85];!bg-[#054F85],
+             #withdrawEgetyNetwork:!hidden,#withdrawTRC20Network:hidden"
+        >
+            eAI
+        </div>
+        <div id="withdrawTRXBtn"
+             class="shadow-[inset_0px_0px_8px_0px_#00F0FF] text-[#054F85] px-[19px] py-[5px] text-center rounded-[5px] cursor-pointer"
+             hx-ext="htmx-set, htmx-ensure"
+             hx-set="#withdrawWalletAddress:att;;placeholder='Enter Tron Wallet Address',,
+                    #withdrawAmount:att;;placeholder='Enter Amount    TRX'"
+             hx-ensure="#withdrawEgetyAvailable:hidden,
+             #withdrawEgetyBtn:!text-white;shadow-[inset_0px_0px_8px_0px_#00F0FF];text-[#054F85];!bg-[#054F85],
+             #withdrawEAIAvailable:hidden,
+             #withdrawEAIBtn:!text-white;shadow-[inset_0px_0px_8px_0px_#00F0FF];text-[#054F85];!bg-[#054F85],
+             #withdrawTRXAvailable:!hidden,
+             #withdrawTRXBtn:text-white;!shadow-[inset_0px_0px_8px_0px_#00F0FF];!text-[#054F85];bg-[#054F85],
+             #withdrawUSDTAvailable:hidden,
+             #withdrawUSDTBtn:!text-white;shadow-[inset_0px_0px_8px_0px_#00F0FF];text-[#054F85];!bg-[#054F85],
+             #withdrawEgetyNetwork:hidden,#withdrawTRC20Network:!hidden"
+        >
+            TRX
+        </div>
+        <div id="withdrawUSDTBtn"
+             class="shadow-[inset_0px_0px_8px_0px_#00F0FF] text-[#054F85] px-[19px] py-[5px] text-center rounded-[5px] cursor-pointer"
+             hx-ext="htmx-set, htmx-ensure"
+             hx-set="#withdrawWalletAddress:att;;placeholder='Enter Tron Wallet Address',,
+                    #withdrawAmount:att;;placeholder='Enter Amount    USDT'"
+             hx-ensure="#withdrawEgetyAvailable:hidden,
+             #withdrawEgetyBtn:!text-white;shadow-[inset_0px_0px_8px_0px_#00F0FF];text-[#054F85];!bg-[#054F85],
+             #withdrawEAIAvailable:hidden,
+             #withdrawEAIBtn:!text-white;shadow-[inset_0px_0px_8px_0px_#00F0FF];text-[#054F85];!bg-[#054F85],
+             #withdrawTRXAvailable:hidden,
+             #withdrawTRXBtn:!text-white;shadow-[inset_0px_0px_8px_0px_#00F0FF];text-[#054F85];!bg-[#054F85],
+             #withdrawUSDTAvailable:!hidden,
+             #withdrawUSDTBtn:text-white;!shadow-[inset_0px_0px_8px_0px_#00F0FF];!text-[#054F85];bg-[#054F85],
+             #withdrawEgetyNetwork:hidden,#withdrawTRC20Network:!hidden"
+        >
+            USDT
+        </div>
+    </div>
+    <div class="mt-[7px] mx-[19px] border border-[#054F85] rounded-[5px] flex justify-between items-center">
+        <input type="text"
+               id="withdrawWalletAddress"
+               class="w-full py-[6px] pl-[7px] text-[15px] font-Inter font-normal text-[#054F85] bg-white border-0 rounded-[5px]"
+               placeholder="Enter Egety Wallet Address"/>
+        <div id="pasteBtn"
+             hx-ext="htmx-copy"
+             hx-paste="#withdrawWalletAddress"
+             class="bg-[#054F85] px-[19px] py-[5px] text-center rounded-[5px] text-white transform-[scale(0.97)] cursor-pointer">
+            Paste
+        </div>
+
+    </div>
+    <div class="mx-[19px] flex justify-between items-center font-Inter text-[15px] font-medium">
+        <div class="text-[#A5A6A8]">TXN Fee: <span class="text-[#054F85] ">0.00001 Egety</span></div>
+        <div class="text-[#A5A6A8]">Network:
+            <span id="withdrawEgetyNetwork" class="text-[#054F85]">Egety</span>
+            <span id="withdrawTRC20Network" class="text-[#054F85] hidden">TRC-20</span>
+        </div>
+    </div>
+    <div class="mx-[19px] mt-[8px] grid grid-cols-[2fr_1fr] justify-between items-center font-Inter text-[15px] font-medium gap-[21px]">
+        <input id="withdrawAmount"
+                type="text"
+               class="w-full py-[6px] pl-[7px] text-[15px] font-Inter font-normal text-[#054F85] bg-white border-[#054F85] border rounded-[5px]"
+               placeholder="Enter Amount    Egety"/>
+        <div class="bg-[#054F85] px-[19px] py-[5px] text-center rounded-[5px] text-white cursor-pointer">Withdraw</div>
+    </div>
+    <div class="mb-[14px] mx-[19px] font-Inter text-[15px] font-medium text-left">
+        <div class="text-[#A5A6A8]">Available:
+            <span id="withdrawEgetyAvailable"
+                  class="text-[#054F85]">{{FormatNumWithComma $.walletInfo.eEgety 2}} Egety</span>
+            <span id="withdrawEAIAvailable"
+                  class="text-[#054F85] hidden">{{FormatNumWithComma $.walletInfo.eAI 2}} eAI</span>
+            <span id="withdrawTRXAvailable"
+                  class="text-[#054F85] hidden">{{FormatNumWithComma $.walletInfo.trx 2}} TRX</span>
+            <span id="withdrawUSDTAvailable" class="text-[#054F85] hidden">{{FormatNumWithComma $.walletInfo.usdt 2}} USDT</span>
+        </div>
+    </div>
+</div>

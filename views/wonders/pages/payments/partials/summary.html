@@ -1,0 +1,116 @@
+<div id="paymentFees"
+     class="block h-fit  rounded-[5px] border-[1px] border-[#054F85] shadow-[inset_0px_0px_8px_0px_#054F85]">
+    <style>
+        .animate-3s-linear-infinite {
+           animation-name: linear-infinite-3s;
+            animation-duration: 15s;
+            animation-iteration-count: infinite;
+            animation-timing-function: cubic-bezier(0.250, 0.250, 0.750, 0.750);
+        }
+        @keyframes linear-infinite-3s {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-87.5%);
+            }
+        }
+    </style>
+    <div class="flex w-full justify-center mt-[14px] text-[15px] text-[#054F85] font-Inter font-bold">
+        Order Summary
+    </div>
+    <div class="mt-[8px] mx-[19px] py-[7px] border border-[#01F0FF] rounded-full shadow-[inset_0px_0px_8px_0px_#01F0FF] grid grid-cols-[2fr_8fr_2fr] text-[15px] text-[#054F85] font-Inter font-medium">
+        <div></div>
+        <div class="relative h-[24px] overflow-hidden flex-1">
+            <div class="animate-3s-linear-infinite" id="conversions">
+                <div class="text-nowrap h-[24px] flex items-center text-center justify-center">1 Egety = {{FormatNumWithComma $.ecosystem.egety2usd 2}} eUSD</div>
+                <div class="text-nowrap h-[24px] flex items-center text-center justify-center">eUSD = USDT = USD</div>
+                <div class="text-nowrap h-[24px] flex items-center text-center justify-center">1 Egety = {{FormatNumWithComma $.ecosystem.egety2eai 2}} USD</div>
+                <div class="text-nowrap h-[24px] flex items-center text-center justify-center">1 Egety = 1 eEgety</div>
+                <div class="text-nowrap h-[24px] flex items-center text-center justify-center">1 TRX = {{FormatNumWithComma $.ecosystem.trx2usd 2}} eUSD</div>
+                <div class="text-nowrap h-[24px] flex items-center text-center justify-center">1 TRX = {{FormatNumWithComma $.ecosystem.trx2eai 2}} eAI</div>
+                <div class="text-nowrap h-[24px] flex items-center text-center justify-center">1 eAI = {{FormatNumWithComma $.ecosystem.eai2usd 2}} eAI</div>
+                <div class="text-nowrap h-[24px] flex items-center text-center justify-center">1 Egety = {{FormatNumWithComma $.ecosystem.egety2usd 2}} eUSD</div>
+            </div>
+        </div>
+        <div class="flex justify-end-safe items-center-safe mr-4">
+            <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_5086_2700)">
+                    <path d="M0 6L6 0L12 6H0Z" fill="#054F85"/>
+                </g>
+                <defs>
+                    <clipPath id="clip0_5086_2700">
+                        <rect width="12" height="6" fill="white"/>
+                    </clipPath>
+                </defs>
+            </svg>
+        </div>
+    </div>
+    <div class="mt-[10px] flex justify-between items-center mx-[19px] text-[15px] text-[#054F85] font-Inter font-normal">
+            <div>Package Purchase</div>
+        <div id="summaryPackagePrice">100 eAI</div>
+    </div>
+    <div class="mt-[13px] flex justify-between items-center mx-[19px] text-[15px] text-[#054F85] font-Inter font-normal hidden">
+        <div>Package Credits</div>
+        <div>10,000 eAI</div>
+    </div>
+    <div class="mt-[13px] flex justify-between items-center mx-[19px] text-[15px] text-[#054F85] font-Inter font-normal hidden">
+        <div>Total Installments</div>
+        <div>50,000 eAI</div>
+    </div>
+    <div class="mt-[13px] mx-[19px] border-t border-[#054F85]"></div>
+    <div class="mt-[13px] mx-[19px] text-[20px] font-Inter font-bold text-left text-[#054F85]">
+        Required Balance
+    </div>
+    <div class="mt-[13px] flex justify-between items-center mx-[19px] text-[15px] text-[#054F85] font-Inter font-normal hidden">
+        <div>First Payment</div>
+        <div>40,000 eAI</div>
+    </div>
+    <div class="mt-[13px] flex justify-between items-center mx-[19px] text-[15px] text-[#054F85] font-Inter font-normal">
+        <div>Purchase Fees</div>
+        <div id="summaryPruchaseFees">260 eAI</div>
+    </div>
+    <div class="mt-[13px] flex justify-between items-center mx-[19px] text-[15px] text-[#054F85] font-Inter font-normal">
+        <div>Tron Transaction Fee</div>
+        {{if  $.walletInfo.needsTrx }}
+        <div>8 TRX</div>
+        {{else}}
+            <div>{{FormatNumWithComma $.walletInfo.trxFees 2}} TRX </div>
+        {{end}}
+    </div>
+    <div class="mt-[13px] flex justify-between items-center mx-[19px] text-[15px] text-[#054F85] font-Inter font-normal">
+        <div>Package Minting Fee</div>
+        <div>{{FormatNumWithComma $.mintingFees 6}} Egety</div>
+    </div>
+    <div class="mt-[13px] flex justify-between items-center mx-[19px] text-[15px] text-[#054F85] font-Inter font-normal">
+        <div>Egety Transaction Fees (X2)</div>
+        <div>{{FormatNumWithComma $.transactionFees 6}} Egety</div>
+    </div>
+    <div class="mt-[13px] flex justify-between items-center mx-[19px] text-[15px] text-[#054F85] font-Inter font-normal">
+        <div>Egety Automation Fee</div>
+        <div>{{FormatNumWithComma $.automationFees 6}} Egety</div>
+    </div>
+    <div class="mt-[13px] flex justify-between items-center mx-[19px] text-[15px] text-[#054F85] font-Inter font-normal">
+        <div>eAI Insurance Fee</div>
+        <div>{{FormatNumWithComma $.insuranceFees 0}} eAI</div>
+    </div>
+    <div class="mt-[13px] flex justify-between items-center mx-[19px] text-[20px] text-[#054F85] font-Inter font-normal">
+        <div>To Be Paid</div>
+        <div id="toBePaid">40,309 USDT</div>
+    </div>
+    <div class="hidden mt-[13px] flex justify-between items-center mx-[19px] text-[15px] text-[#054F85] font-Inter font-normal items-center">
+        <div class="font-bold">Use Egety Automation</div>
+        <div class="font-normal flex justify-between items-center gap-[5px]">
+            <div class="text-[#A5A6A8]">Disabled</div>
+            <div class="relative">
+                <div class="w-[40px] h-[20px] rounded-full bg-[#054F85]"> </div>
+                <div class="absolute w-[18px] h-[18px] right-[1px] bottom-[1px] rounded-full bg-white"></div>
+            </div>
+            <div>Enabled</div>
+        </div>
+    </div>
+    <div class="mt-[13px] mx-[19px] text-center font-Inter font-light text-[#4A4E54] text-[15px] tracking-[-1px]">
+        Egety Automation supplies the needed TRX and Egety Coin, bridges USDT to eUSD, swaps to eAI, and completes the purchase automatically.
+    </div>
+    <div class="mt-[13px]"></div>
+</div>
