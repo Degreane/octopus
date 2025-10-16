@@ -258,10 +258,38 @@
 
         <div class="p-4 rounded-lg bg-slate-50">
           <h3 class="mb-2 font-semibold text-slate-800">
+            FormatNumWithComma number [precision]
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Formats numbers with comma thousands separators and optional decimal precision
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              &lt;!-- Large number formatting --&gt;<br/>
+              {{ "{{" }} $population := 1234567.89 {{ "}}" }}<br/>
+              &lt;p&gt;Population: {{ "{{" }} FormatNumWithComma $population 0 {{ "}}" }}&lt;/p&gt;<br/>
+              &lt;!-- Output: Population: 1,234,568 --&gt;<br/><br/>
+              &lt;!-- Financial display with decimals --&gt;<br/>
+              {{ "{{" }} $revenue := 5678901.234 {{ "}}" }}<br/>
+              &lt;div class="financial"&gt;<br/>
+              &nbsp;&nbsp;&lt;span&gt;Revenue: ${{ "{{" }} FormatNumWithComma $revenue 2 {{ "}}" }}&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&lt;!-- Output: Revenue: $5,678,901.23 --&gt;<br/>
+              &lt;/div&gt;<br/><br/>
+              &lt;!-- Default precision (2 decimal places) --&gt;<br/>
+              {{ "{{" }} $amount := 999999.999 {{ "}}" }}<br/>
+              &lt;p&gt;Amount: {{ "{{" }} FormatNumWithComma $amount {{ "}}" }}&lt;/p&gt;<br/>
+              &lt;!-- Output: Amount: 1,000,000.00 --&gt;
+
+            </code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
             timestamp dateString
           </h3>
           <p class="mb-3 text-sm text-slate-600">
-            Converts date strings to Unix timestamps
+            Converts date strings to Unix timestamps (supports multiple formats)
           </p>
           <div class="p-3 text-sm rounded bg-slate-800">
             <code class="text-green-400">
@@ -281,6 +309,272 @@
               {{ "{{" }} else {{ "}}" }}<br/>
               &nbsp;&nbsp;&lt;span class="past"&gt;Past Event&lt;/span&gt;<br/>
               {{ "{{" }} end {{ "}}" }}
+
+            </code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Iteration & Loop Functions -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-pink-500 to-pink-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Iteration & Loop Functions
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            iterate [args...]
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Flexible iteration with multiple signatures: iterate(n), iterate(n, step), iterate(start, end), iterate(start, end, step)
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              &lt;!-- Simple 0 to n-1 iteration --&gt;<br/>
+              {{ "{{" }} range $i := iterate 5 {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;div class="item-{{ "{{" }} $i {{ "}}" }}"&gt;Item {{ "{{" }} $i {{ "}}" }}&lt;/div&gt;<br/>
+              {{ "{{" }} end {{ "}}" }}<br/>
+              &lt;!-- Output: Item 0, Item 1, Item 2, Item 3, Item 4 --&gt;<br/><br/>
+              &lt;!-- Iterate with step --&gt;<br/>
+              {{ "{{" }} range $i := iterate 10 2 {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;span&gt;{{ "{{" }} $i {{ "}}" }}&lt;/span&gt;<br/>
+              {{ "{{" }} end {{ "}}" }}<br/>
+              &lt;!-- Output: 0, 2, 4, 6, 8 --&gt;<br/><br/>
+              &lt;!-- Iterate from start to end --&gt;<br/>
+              {{ "{{" }} range $i := iterate 5 10 {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;span&gt;{{ "{{" }} $i {{ "}}" }}&lt;/span&gt;<br/>
+              {{ "{{" }} end {{ "}}" }}<br/>
+              &lt;!-- Output: 5, 6, 7, 8, 9 --&gt;<br/><br/>
+              &lt;!-- Iterate with start, end, and step --&gt;<br/>
+              {{ "{{" }} range $i := iterate 0 20 5 {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;div class="marker-{{ "{{" }} $i {{ "}}" }}"&gt;{{ "{{" }} $i {{ "}}" }}%&lt;/div&gt;<br/>
+              {{ "{{" }} end {{ "}}" }}<br/>
+              &lt;!-- Output: 0%, 5%, 10%, 15% --&gt;
+
+            </code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            iterateEven start end, iterateOdd start end
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Generate only even or odd numbers in a range
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              &lt;!-- Even numbers --&gt;<br/>
+              &lt;div class="even-grid"&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} range $num := iterateEven 0 10 {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="even-cell"&gt;{{ "{{" }} $num {{ "}}" }}&lt;/div&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} end {{ "}}" }}<br/>
+              &lt;/div&gt;<br/>
+              &lt;!-- Output: 0, 2, 4, 6, 8 --&gt;<br/><br/>
+              &lt;!-- Odd numbers --&gt;<br/>
+              &lt;div class="odd-grid"&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} range $num := iterateOdd 1 10 {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="odd-cell"&gt;{{ "{{" }} $num {{ "}}" }}&lt;/div&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} end {{ "}}" }}<br/>
+              &lt;/div&gt;<br/>
+              &lt;!-- Output: 1, 3, 5, 7, 9 --&gt;<br/><br/>
+              &lt;!-- Alternating row styles --&gt;<br/>
+              {{ "{{" }} range $row := iterateEven 0 (length .TableData) {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;tr class="even-row"&gt;&lt;td&gt;{{ "{{" }} index .TableData $row {{ "}}" }}&lt;/td&gt;&lt;/tr&gt;<br/>
+              {{ "{{" }} end {{ "}}" }}
+
+            </code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            iterateMultiple multiple count
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Generate multiples of a number (multiple * 1, multiple * 2, ..., multiple * count)
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              &lt;!-- Multiples of 5 --&gt;<br/>
+              &lt;div class="price-points"&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} range $price := iterateMultiple 5 8 {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;button class="price-btn"&gt;${{ "{{" }} $price {{ "}}" }}&lt;/button&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} end {{ "}}" }}<br/>
+              &lt;/div&gt;<br/>
+              &lt;!-- Output: $5, $10, $15, $20, $25, $30, $35, $40 --&gt;<br/><br/>
+              &lt;!-- Grid columns --&gt;<br/>
+              &lt;div class="layout-options"&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} range $cols := iterateMultiple 2 4 {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="grid-{{ "{{" }} $cols {{ "}}" }}-cols"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} $cols {{ "}}" }} Columns<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} end {{ "}}" }}<br/>
+              &lt;/div&gt;<br/>
+              &lt;!-- Output: 2 Columns, 4 Columns, 6 Columns, 8 Columns --&gt;
+
+            </code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            iterateRange start end step, iterateFilter start end step
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Create custom ranges with explicit start, end, and step values
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              &lt;!-- iterateRange example --&gt;<br/>
+              &lt;div class="progress-markers"&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} range $pct := iterateRange 0 100 25 {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="marker"&gt;{{ "{{" }} $pct {{ "}}" }}%&lt;/span&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} end {{ "}}" }}<br/>
+              &lt;/div&gt;<br/>
+              &lt;!-- Output: 0%, 25%, 50%, 75% --&gt;<br/><br/>
+              &lt;!-- iterateFilter (same behavior) --&gt;<br/>
+              {{ "{{" }} range $year := iterateFilter 2020 2026 1 {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;option value="{{ "{{" }} $year {{ "}}" }}"&gt;{{ "{{" }} $year {{ "}}" }}&lt;/option&gt;<br/>
+              {{ "{{" }} end {{ "}}" }}<br/>
+              &lt;!-- Output: 2020, 2021, 2022, 2023, 2024, 2025 --&gt;
+
+            </code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Type Conversion & Utility Functions -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-cyan-500 to-cyan-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+          Type Conversion & Utility Functions
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            asInt value, asFloat value, asString value
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Convert values between different types (int, float, string)
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              &lt;!-- Convert string to integer --&gt;<br/>
+              {{ "{{" }} $strValue := "42" {{ "}}" }}<br/>
+              {{ "{{" }} $intValue := asInt $strValue {{ "}}" }}<br/>
+              {{ "{{" }} $doubled := multiplyInt $intValue 2 {{ "}}" }}<br/>
+              &lt;p&gt;Result: {{ "{{" }} $doubled {{ "}}" }}&lt;/p&gt;<br/>
+              &lt;!-- Output: Result: 84 --&gt;<br/><br/>
+              &lt;!-- Convert to float for precision --&gt;<br/>
+              {{ "{{" }} $percentage := 85 {{ "}}" }}<br/>
+              {{ "{{" }} $decimal := divideFloat (asFloat $percentage) 100.0 {{ "}}" }}<br/>
+              &lt;p&gt;Decimal: {{ "{{" }} formatNum $decimal 2 {{ "}}" }}&lt;/p&gt;<br/>
+              &lt;!-- Output: Decimal: 0.85 --&gt;<br/><br/>
+              &lt;!-- Convert any value to string --&gt;<br/>
+              {{ "{{" }} $num := 123.456 {{ "}}" }}<br/>
+              {{ "{{" }} $str := asString $num {{ "}}" }}<br/>
+              &lt;p data-value="{{ "{{" }} $str {{ "}}" }}"&gt;Value: {{ "{{" }} $str {{ "}}" }}&lt;/p&gt;<br/>
+              &lt;!-- Output: data-value="123.456" --&gt;
+
+            </code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            checkType value
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Determine the type of a value (returns: "int", "float", "string", "strInt", "strFloat", etc.)
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              &lt;!-- Type checking --&gt;<br/>
+              {{ "{{" }} $value := .UserInput {{ "}}" }}<br/>
+              {{ "{{" }} $type := checkType $value {{ "}}" }}<br/>
+              &lt;div class="input-info"&gt;<br/>
+              &nbsp;&nbsp;&lt;p&gt;Type: {{ "{{" }} $type {{ "}}" }}&lt;/p&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} if eq $type "strInt" {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="badge"&gt;Integer String&lt;/span&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} else if eq $type "strFloat" {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="badge"&gt;Float String&lt;/span&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} else if eq $type "string" {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="badge"&gt;Text String&lt;/span&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} end {{ "}}" }}<br/>
+              &lt;/div&gt;<br/><br/>
+              &lt;!-- Conditional processing based on type --&gt;<br/>
+              {{ "{{" }} range .DataValues {{ "}}" }}<br/>
+              &nbsp;&nbsp;{{ "{{" }} $t := checkType . {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;div class="data-cell type-{{ "{{" }} $t {{ "}}" }}"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} if or (eq $t "int") (eq $t "float") {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="number"&gt;{{ "{{" }} formatNum . 2 {{ "}}" }}&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} else {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="text"&gt;{{ "{{" }} . {{ "}}" }}&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} end {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;/div&gt;<br/>
+              {{ "{{" }} end {{ "}}" }}
+
+            </code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            uuid
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Generate a random UUID v4 identifier
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              &lt;!-- Generate unique IDs --&gt;<br/>
+              {{ "{{" }} $uniqueID := uuid {{ "}}" }}<br/>
+              &lt;div id="{{ "{{" }} $uniqueID {{ "}}" }}" class="dynamic-element"&gt;<br/>
+              &nbsp;&nbsp;Element with unique ID<br/>
+              &lt;/div&gt;<br/><br/>
+              &lt;!-- Multiple unique elements --&gt;<br/>
+              {{ "{{" }} range .Items {{ "}}" }}<br/>
+              &nbsp;&nbsp;{{ "{{" }} $itemID := uuid {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;div id="item-{{ "{{" }} $itemID {{ "}}" }}"<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-uuid="{{ "{{" }} $itemID {{ "}}" }}"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;h3&gt;{{ "{{" }} .Title {{ "}}" }}&lt;/h3&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;{{ "{{" }} .Content {{ "}}" }}&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&lt;/div&gt;<br/>
+              {{ "{{" }} end {{ "}}" }}<br/><br/>
+              &lt;!-- Form field IDs --&gt;<br/>
+              {{ "{{" }} $fieldID := uuid {{ "}}" }}<br/>
+              &lt;label for="{{ "{{" }} $fieldID {{ "}}" }}"&gt;Email:&lt;/label&gt;<br/>
+              &lt;input id="{{ "{{" }} $fieldID {{ "}}" }}" type="email" name="email"&gt;
 
             </code>
           </div>
@@ -744,6 +1038,43 @@
       <div class="p-6 space-y-4">
         <div class="p-4 rounded-lg bg-slate-50">
           <h3 class="mb-2 font-semibold text-slate-800">
+            add a b, subtract a b, multiply a b, divide a b
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            General arithmetic operations that automatically handle type conversion (aliases for float operations)
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              &lt;!-- Simple arithmetic --&gt;<br/>
+              {{ "{{" }} $a := 10 {{ "}}" }}<br/>
+              {{ "{{" }} $b := 3.5 {{ "}}" }}<br/>
+              &lt;div class="calculations"&gt;<br/>
+              &nbsp;&nbsp;&lt;p&gt;Add: {{ "{{" }} formatNum (add $a $b) 2 {{ "}}" }}&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&lt;p&gt;Subtract: {{ "{{" }} formatNum (subtract $a $b) 2 {{ "}}" }}&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&lt;p&gt;Multiply: {{ "{{" }} formatNum (multiply $a $b) 2 {{ "}}" }}&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&lt;p&gt;Divide: {{ "{{" }} formatNum (divide $a $b) 2 {{ "}}" }}&lt;/p&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;!-- Output: Add: 13.50, Subtract: 6.50, Multiply: 35.00, Divide: 2.86 --&gt;<br/><br/>
+              &lt;!-- Complex calculation --&gt;<br/>
+              {{ "{{" }} $price := 100 {{ "}}" }}<br/>
+              {{ "{{" }} $tax := 0.08 {{ "}}" }}<br/>
+              {{ "{{" }} $discount := 15 {{ "}}" }}<br/>
+              {{ "{{" }} $taxAmount := multiply $price $tax {{ "}}" }}<br/>
+              {{ "{{" }} $priceWithTax := add $price $taxAmount {{ "}}" }}<br/>
+              {{ "{{" }} $finalPrice := subtract $priceWithTax $discount {{ "}}" }}<br/>
+              &lt;div class="pricing"&gt;<br/>
+              &nbsp;&nbsp;&lt;p&gt;Base Price: ${{ "{{" }} formatNum $price 2 {{ "}}" }}&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&lt;p&gt;Tax: ${{ "{{" }} formatNum $taxAmount 2 {{ "}}" }}&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&lt;p&gt;Discount: -${{ "{{" }} formatNum $discount 2 {{ "}}" }}&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&lt;p class="total"&gt;Final: ${{ "{{" }} formatNum $finalPrice 2 {{ "}}" }}&lt;/p&gt;<br/>
+              &lt;/div&gt;
+
+            </code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
             multiply a b
           </h3>
           <p class="mb-3 text-sm text-slate-600">
@@ -961,19 +1292,56 @@
             </div>
           </div>
           <div class="space-y-2">
+            <h4 class="font-semibold text-gray-800">Formatting</h4>
+            <div class="space-y-1 text-sm text-gray-600">
+              <div><code class="px-1 bg-gray-100 rounded">formatNum</code> - Format decimals</div>
+              <div><code class="px-1 bg-gray-100 rounded">FormatNumWithComma</code> - Format with commas</div>
+              <div><code class="px-1 bg-gray-100 rounded">timestamp</code> - Parse dates</div>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-semibold text-gray-800">Iteration</h4>
+            <div class="space-y-1 text-sm text-gray-600">
+              <div><code class="px-1 bg-gray-100 rounded">iterate</code> - Flexible loops</div>
+              <div><code class="px-1 bg-gray-100 rounded">iterateEven</code> - Even numbers</div>
+              <div><code class="px-1 bg-gray-100 rounded">iterateOdd</code> - Odd numbers</div>
+              <div><code class="px-1 bg-gray-100 rounded">iterateMultiple</code> - Multiples</div>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-semibold text-gray-800">Type Conversion</h4>
+            <div class="space-y-1 text-sm text-gray-600">
+              <div><code class="px-1 bg-gray-100 rounded">asInt</code> - To integer</div>
+              <div><code class="px-1 bg-gray-100 rounded">asFloat</code> - To float</div>
+              <div><code class="px-1 bg-gray-100 rounded">asString</code> - To string</div>
+              <div><code class="px-1 bg-gray-100 rounded">checkType</code> - Get type</div>
+            </div>
+          </div>
+          <div class="space-y-2">
             <h4 class="font-semibold text-gray-800">Integers</h4>
             <div class="space-y-1 text-sm text-gray-600">
-              <div><code class="px-1 bg-gray-100 rounded">addInt</code> - Add integers</div>
+              <div><code class="px-1 bg-gray-100 rounded">addInt</code> - Add</div>
               <div><code class="px-1 bg-gray-100 rounded">intGt</code> - Greater than</div>
-              <div><code class="px-1 bg-gray-100 rounded">maxInt</code> - Maximum</div>
+              <div><code class="px-1 bg-gray-100 rounded">maxInt</code> / <code class="px-1 bg-gray-100 rounded">minInt</code> - Min/Max</div>
+              <div><code class="px-1 bg-gray-100 rounded">absInt</code> - Absolute value</div>
             </div>
           </div>
           <div class="space-y-2">
             <h4 class="font-semibold text-gray-800">Floats</h4>
             <div class="space-y-1 text-sm text-gray-600">
-              <div><code class="px-1 bg-gray-100 rounded">addFloat</code> - Add floats</div>
-              <div><code class="px-1 bg-gray-100 rounded">formatNum</code> - Format number</div>
+              <div><code class="px-1 bg-gray-100 rounded">addFloat</code> - Add</div>
               <div><code class="px-1 bg-gray-100 rounded">floatGte</code> - Greater/equal</div>
+              <div><code class="px-1 bg-gray-100 rounded">maxFloat</code> / <code class="px-1 bg-gray-100 rounded">minFloat</code> - Min/Max</div>
+              <div><code class="px-1 bg-gray-100 rounded">absFloat</code> - Absolute value</div>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-semibold text-gray-800">General Math</h4>
+            <div class="space-y-1 text-sm text-gray-600">
+              <div><code class="px-1 bg-gray-100 rounded">add</code> - Add (auto-type)</div>
+              <div><code class="px-1 bg-gray-100 rounded">subtract</code> - Subtract</div>
+              <div><code class="px-1 bg-gray-100 rounded">multiply</code> - Multiply</div>
+              <div><code class="px-1 bg-gray-100 rounded">divide</code> - Divide</div>
             </div>
           </div>
           <div class="space-y-2">
@@ -982,18 +1350,13 @@
               <div><code class="px-1 bg-gray-100 rounded">rand</code> - Random 0-99</div>
               <div><code class="px-1 bg-gray-100 rounded">randRange</code> - Random range</div>
               <div><code class="px-1 bg-gray-100 rounded">randFloat</code> - Random float</div>
+              <div><code class="px-1 bg-gray-100 rounded">randFloatRange</code> - Float range</div>
             </div>
           </div>
           <div class="space-y-2">
-            <h4 class="font-semibold text-gray-800">Time</h4>
+            <h4 class="font-semibold text-gray-800">Utilities</h4>
             <div class="space-y-1 text-sm text-gray-600">
-              <div><code class="px-1 bg-gray-100 rounded">timestamp</code> - Parse dates</div>
-            </div>
-          </div>
-          <div class="space-y-2">
-            <h4 class="font-semibold text-gray-800">General</h4>
-            <div class="space-y-1 text-sm text-gray-600">
-              <div><code class="px-1 bg-gray-100 rounded">multiply</code> - Auto-type multiply</div>
+              <div><code class="px-1 bg-gray-100 rounded">uuid</code> - Generate UUID</div>
             </div>
           </div>
         </div>

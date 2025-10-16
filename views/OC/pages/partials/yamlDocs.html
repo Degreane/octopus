@@ -118,7 +118,7 @@
       <div class="p-6 mb-6 overflow-x-auto rounded-lg bg-slate-900">
         <pre class="text-sm text-slate-300"><code><span class="text-yellow-400">- Name:</span> <span class="text-green-400">"EzeKod Octopus"</span>
   <span class="text-yellow-400">Description:</span> <span class="text-green-400">"EzeKod Octopus is a powerful and versatile module..."</span>
-  <span class="text-yellow-400">Version:</span> <span class="text-blue-400">25.4.22</span>
+  <span class="text-yellow-400">Version:</span> <span class="text-blue-400">25.10.16</span>
   <span class="text-yellow-400">Author:</span> <span class="text-green-400">Faysal AL-Banna</span>
   <span class="text-yellow-400">Email:</span> <span class="text-green-400">degreane@gmail.com</span>
   <span class="text-yellow-400">Website:</span> <span class="text-green-400">https://www.ezekod.com</span>
@@ -135,7 +135,13 @@
         <span class="text-yellow-400">- script:</span> <span class="text-green-400">parseHeaders.lua</span>
         <span class="text-yellow-400">- script:</span> <span class="text-green-400">currentPage.lua</span>
         <span class="text-yellow-400">- script:</span> <span class="text-green-400">session.lua</span>
-      <span class="text-yellow-400">view:</span> <span class="text-green-400">pages/home</span></code></pre>
+      <span class="text-yellow-400">view:</span> <span class="text-green-400">pages/home</span>
+    <span class="text-yellow-400">- method:</span> <span class="text-green-400">GET</span>
+      <span class="text-yellow-400">path:</span> <span class="text-green-400">/ws/:id</span>
+      <span class="text-yellow-400">websocket:</span> <span class="text-blue-400">true</span>
+      <span class="text-yellow-400">preCheck:</span>
+        <span class="text-yellow-400">- script:</span> <span class="text-green-400">auth/isLoggedIn.lua</span>
+      <span class="text-yellow-400">view:</span> <span class="text-green-400">pages/ws</span></code></pre>
       </div>
 
       <!-- Configuration Fields Explanation -->
@@ -174,15 +180,13 @@
             <h3 class="flex items-center mb-2 font-semibold text-slate-800">
               <span class="w-3 h-3 mr-2 bg-purple-500 rounded-full"></span>
               Route Definition
-                        <h3 class="flex items-center mb-2 font-semibold text-slate-800">
-              <span class="w-3 h-3 mr-2 bg-purple-500 rounded-full"></span>
-              Route Definition
             </h3>
             <ul class="space-y-2 text-sm text-slate-600">
-              <li><strong>Method:</strong> HTTP verb (GET, POST, PUT, DELETE)</li>
-              <li><strong>Path:</strong> URL endpoint relative to BasePath</li>
-              <li><strong>View:</strong> Template file to render response</li>
-              <li><strong>PreCheck:</strong> Middleware scripts execution chain</li>
+              <li><strong>method:</strong> HTTP verb (GET, POST, PUT, DELETE)</li>
+              <li><strong>path:</strong> URL endpoint relative to BasePath</li>
+              <li><strong>view:</strong> Template file to render response</li>
+              <li><strong>preCheck:</strong> Middleware scripts execution chain</li>
+              <li><strong>websocket:</strong> WebSocket route flag (optional, true/false)</li>
             </ul>
           </div>
           

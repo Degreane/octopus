@@ -962,6 +962,48 @@ end</code></pre>
             <code class="text-green-400">local uuid = eocto.getUUID()</code>
           </div>
         </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.timeStamp()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns current Unix timestamp in seconds
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local timestamp = eocto.timeStamp()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.timeStampMilli()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns current Unix timestamp in milliseconds
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local timestampMs = eocto.timeStampMilli()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.timeStampNano()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns current Unix timestamp in nanoseconds
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local timestampNs = eocto.timeStampNano()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.getSettings()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns module configuration settings including BasePath and LocalPath
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local settings = eocto.getSettings()<br/>
+local basePath = settings.BasePath<br/>
+local localPath = settings.LocalPath</code>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1017,38 +1059,67 @@ end</code></pre>
               stroke-width="2"
               d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
           </svg>
-          WebSocket Support
+          WebSocket Functions
         </h2>
       </div>
-      <div class="p-6">
+      <div class="p-6 space-y-4">
         <div class="p-4 rounded-lg bg-slate-50">
           <h3 class="mb-2 font-semibold text-slate-800">
-            WebSocket Route Configuration
+            eocto.wsAddRoom(roomId)
           </h3>
           <p class="mb-3 text-sm text-slate-600">
-            Octopus supports WebSocket connections through route configuration.
-            WebSocket routes are automatically handled with session management
-            and client tracking.
+            Adds the current WebSocket connection to a room
           </p>
           <div class="p-3 text-sm rounded bg-slate-800">
-            <code class="text-green-400">
-              -- WebSocket routes are configured in module configuration<br />
-              -- and provide real-time bidirectional communication<br />
-              -- with automatic client management and broadcasting
-            </code>
+            <code class="text-green-400">eocto.wsAddRoom("chat-room-1")</code>
           </div>
-          <div class="mt-3">
-            <span class="px-2 py-1 text-xs text-blue-800 bg-blue-100 rounded">
-              Real-time Communication
-            </span>
-            <span
-              class="px-2 py-1 ml-2 text-xs text-green-800 bg-green-100 rounded">
-              Client Management
-            </span>
-            <span
-              class="px-2 py-1 ml-2 text-xs text-purple-800 bg-purple-100 rounded">
-              Broadcasting
-            </span>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.wsRemoveRoom(roomId)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Removes the current WebSocket connection from a room
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.wsRemoveRoom("chat-room-1")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.wsGetUserRooms()
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns a list of all rooms the current user is in
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local rooms = eocto.wsGetUserRooms()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.wsIsUserInRoom(roomId)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Checks if the current user is in a specific room
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local inRoom = eocto.wsIsUserInRoom("chat-room-1")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.wsEmitToRoom(roomId, event, data)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Broadcasts a message to all connections in a specific room
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.wsEmitToRoom("chat-room-1", "message", {text = "Hello everyone!"})</code>
           </div>
         </div>
       </div>
