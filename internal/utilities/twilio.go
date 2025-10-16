@@ -22,18 +22,10 @@ type TwilioConfig struct {
 // LoadTwilioConfig loads Twilio configuration from environment variables
 func LoadTwilioConfig() (*TwilioConfig, error) {
 	accountSID := os.Getenv("TWILIO_ACCOUNT_SID")
-	if accountSID == "" {
-		accountSID = "AC21b9116592d4991809c679f1b27c3cc6"
-	}
 
 	authToken := os.Getenv("TWILIO_AUTH_TOKEN")
-	if authToken == "" {
-		authToken = "28c3323f0c3654258fa81ba56461ead3"
-	}
+
 	fromNumber := os.Getenv("TWILIO_FROM_NUMBER") // Add from number
-	if fromNumber == "" {
-		fromNumber = "+15155176893"
-	}
 
 	if accountSID == "" || authToken == "" || fromNumber == "" {
 		return nil, fmt.Errorf("missing required Twilio environment variables")
