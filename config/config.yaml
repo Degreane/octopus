@@ -1,0 +1,5 @@
+Port: "3000"
+Prefork: true
+Storage: "redis"
+Debug: true
+ServerHeader: "Eocto 0.23.1.25"

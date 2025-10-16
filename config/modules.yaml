@@ -1,0 +1,59 @@
+- Name: "EzeKod Octopus"
+  Description: " EzeKod Octopus is a powerful and versatile module that provides a wide range of features and functionality to enhance your website's capabilities."
+  Version: 25.10.16
+  Author: Faysal AL-Banna
+  Email: degreane@gmail.com
+  Website: https://www.ezekod.com
+  License: GPL3
+  Dependencies: [ redis, mongodb, lua, tailwindcss ]
+  Settings: [ ]
+  BasePath: /OC
+  db: octopus
+  Routes:
+    - method: GET
+      path: /
+      preCheck:
+        - script: auth/isLoggedIn.lua
+        - script: parseHeaders.lua
+        - script: currentPage.lua
+        - script: session.lua
+      view: pages/home
+    - method: GET
+      path: /lua
+      preCheck:
+        - script: auth/isLoggedIn.lua
+        - script: parseHeaders.lua
+        - script: currentPage.lua
+        - script: session.lua
+      view: pages/lua
+
+    - method: GET
+      path: /yaml
+      preCheck:
+        - script: auth/isLoggedIn.lua
+        - script: parseHeaders.lua
+        - script: currentPage.lua
+        - script: session.lua
+      view: pages/yaml
+
+    - method: GET
+      path: /helpers
+      preCheck:
+        - script: auth/isLoggedIn.lua
+        - script: parseHeaders.lua
+        - script: currentPage.lua
+        - script: session.lua
+      view: pages/helpers
+
+
+    - method: GET
+      path: /ws/:id
+      websocket: true
+      preCheck:
+        - script: auth/isLoggedIn.lua
+        - script: parseHeaders.lua
+        - script: currentPage.lua
+        - script: session.lua
+      view: pages/ws
+
+

@@ -1,0 +1,22 @@
+{
+  "name": "octopus",
+  "version": "25.4.22",
+  "description": "EzeKod Octopus Main Module ",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build-css": "tailwindcss -i ./public/css/tailwind_input.css -o ./public/css/styles.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.8",
+    "tailwindcss": "^4.1.8"
+  },
+  "dependencies": {
+    "tailwindcss-font-inter": "^4.0.0",
+    "tronweb": "^6.0.3",
+    "yargs": "^18.0.0"
+  }
+}

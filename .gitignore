@@ -29,3 +29,6 @@ Thumbs.db
 # Air temporary files
 tmp/
 .air.toml.tmp
+
+# node_modules
+node_modules

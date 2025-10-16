@@ -1,0 +1,1159 @@
+<div
+  class="p-6 mx-auto overflow-y-auto border border-blue-200 rounded-lg shadow-lg max-w-8/12 bg-gradient-to-br from-blue-50 to-indigo-100">
+  <div class="flex items-center mb-4">
+    <div class="p-3 mr-4 bg-blue-600 rounded-full">
+      <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+      </svg>
+    </div>
+    <h2 class="text-3xl font-bold text-gray-800">Lua Integration in Octopus</h2>
+  </div>
+
+  <div class="grid gap-6 md:grid-cols-2">
+    <div class="space-y-4">
+      <p class="leading-relaxed text-gray-700">
+        <span class="font-semibold text-blue-700">Lua</span> is a powerful,
+        efficient, lightweight, embeddable scripting language that serves as the
+        core scripting engine in Octopus. It provides dynamic configuration,
+        custom logic execution, and extensible automation capabilities.
+      </p>
+
+      <div class="p-4 bg-white border-l-4 border-blue-500 rounded-md">
+        <h3 class="mb-2 font-semibold text-gray-800">
+          Key Features in Octopus:
+        </h3>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li class="flex items-center">
+            <span class="w-2 h-2 mr-3 bg-blue-500 rounded-full"></span>
+            Dynamic script execution at runtime
+          </li>
+          <li class="flex items-center">
+            <span class="w-2 h-2 mr-3 bg-blue-500 rounded-full"></span>
+            Custom business logic implementation
+          </li>
+          <li class="flex items-center">
+            <span class="w-2 h-2 mr-3 bg-blue-500 rounded-full"></span>
+            Configuration-driven automation
+          </li>
+          <li class="flex items-center">
+            <span class="w-2 h-2 mr-3 bg-blue-500 rounded-full"></span>
+            Seamless Go-Lua interoperability
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <div class="p-4 text-sm bg-gray-900 rounded-lg">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs tracking-wide text-gray-400 uppercase">Example
+            Lua Script</span>
+          <span
+            class="px-2 py-1 text-xs text-white bg-blue-600 rounded">Lua</span>
+        </div>
+        <pre
+          class="overflow-x-auto text-green-400"><code>-- Octopus Lua Integration
+local Inspect = require('views.utils.inspect')
+local path=eocto.getPath()
+print("path: " .. path)
+local paths={
+    ["/OC/"]="home",
+    ["/OC/lua"]="lua",
+    ["/about"]="about",
+    ["/contact"]="contact",
+    ["/services"]="services",
+    ["/portfolio"]="portfolio",
+    ["/blog"]="blog",
+    ["/blog/post"]="post",
+}
+if path ~= nil then 
+    eocto.setLocal("currentPage",paths[path])
+end</code></pre>
+      </div>
+
+      <div class="flex space-x-2">
+        <span
+          class="inline-flex items-center px-3 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full">
+          Embedded Runtime
+        </span>
+        <span
+          class="inline-flex items-center px-3 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
+          High Performance
+        </span>
+        <span
+          class="inline-flex items-center px-3 py-1 text-xs font-medium text-purple-800 bg-purple-100 rounded-full">
+          Extensible
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pt-4 mt-6 border-t border-blue-200">
+    <p class="text-sm italic text-gray-600">
+      "Lua's simplicity and power make it the perfect scripting companion for
+      Octopus, enabling users to extend functionality without recompiling the
+      core application."
+    </p>
+  </div>
+
+  <!-- Header -->
+  <div class="flex items-center mt-8 mb-8">
+    <div
+      class="p-4 mr-6 rounded-full shadow-lg bg-gradient-to-br from-blue-600 to-slate-600">
+      <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+      </svg>
+    </div>
+    <div>
+      <h1 class="mb-2 text-4xl font-bold text-slate-800">
+        Eocto Lua API Reference
+      </h1>
+      <p class="text-lg text-slate-600">
+        Complete guide to Octopus Lua integration functions
+      </p>
+    </div>
+  </div>
+
+  <!-- Function Categories -->
+  <div class="grid gap-8">
+    <!-- Debug Functions -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-purple-500 to-purple-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Debug Functions
+        </h2>
+      </div>
+      <div class="p-6">
+        <div class="p-4 mb-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.debug(level, message)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Logs debug messages with different severity levels
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.debug("info",
+              "User logged in successfully")</code><br />
+            <code class="text-green-400">eocto.debug("warning",
+              "Rate limit approaching")</code><br />
+            <code class="text-green-400">eocto.debug("error",
+              "Database connection failed")</code>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-3">
+            <span
+              class="px-2 py-1 text-xs text-blue-800 bg-blue-100 rounded">info</span>
+            <span
+              class="px-2 py-1 text-xs text-yellow-800 bg-yellow-100 rounded">warning</span>
+            <span
+              class="px-2 py-1 text-xs text-red-800 bg-red-100 rounded">error</span>
+            <span
+              class="px-2 py-1 text-xs text-purple-800 bg-purple-100 rounded">important</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Session Management -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          Session Management
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.getSession(key)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Retrieves a value from the user session
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local userId =
+              eocto.getSession("user_id")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.setSession(key, value)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Stores a value in the user session
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.setSession("user_id",
+              "12345")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.deleteSession(key)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Removes a specific key from the session
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.deleteSession("temp_data")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.setSessionExpiry(seconds)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Sets session expiration time in seconds
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.setSessionExpiry(3600) -- 1
+              hour</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cookie Management -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Cookie Management
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.getCookie(name)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Retrieves a cookie value by name
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local theme =
+              eocto.getCookie("user_theme")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.setCookie(name, value, options)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Sets a cookie with optional configuration
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.setCookie("user_theme", "dark",
+              {maxAge = 86400})</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.getAllCookies()
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns all cookies as a table
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local cookies =
+              eocto.getAllCookies()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.deleteCookie(name)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">Removes a specific cookie</p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code
+              class="text-green-400">eocto.deleteCookie("temp_cookie")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.clearAllCookies()
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Removes all cookies from the client
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.clearAllCookies()</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security Functions -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-red-500 to-red-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          Security & Encryption
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.getCsrfToken()
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Retrieves the CSRF protection token
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local token =
+              eocto.getCsrfToken()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.encryptData(data)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Encrypts sensitive data using server encryption
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local encrypted =
+              eocto.encryptData("sensitive_info")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.decryptData(encryptedData)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Decrypts previously encrypted data
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local decrypted =
+              eocto.decryptData(encrypted)</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HTTP Request Functions -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-green-500 to-green-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
+          </svg>
+          HTTP & Request Handling
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.getMethod()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns the HTTP method (GET, POST, etc.)
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local method = eocto.getMethod()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.getPath()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns the current request path
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local path = eocto.getPath()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.getHost()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns the request host/domain
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local host = eocto.getHost()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.getSchema()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns the request schema (http/https)
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local schema = eocto.getSchema()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.getQueryParams()
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns all query parameters as a table
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local params =
+              eocto.getQueryParams()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.getPathParams()
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns all path parameters as a table
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local pathParams =
+              eocto.getPathParams()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.getPathParam(key)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns a specific path parameter value
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local userId =
+              eocto.getPathParam("id")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.getPostBody()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns the POST request body data
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local body = eocto.getPostBody()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.makeRequest(options)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Makes HTTP requests to external servers
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local response = eocto.makeRequest({url
+              =
+              "https://api.example.com", method = "GET"})</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.proxy(options)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Proxies requests to external servers
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.proxy({url =
+              "https://api.example.com", method = "POST"})</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Headers Management -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-indigo-500 to-indigo-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Headers Management
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.getHeaders()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns all request headers as a table
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local headers =
+              eocto.getHeaders()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.getHeader(name)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns a specific header value
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local userAgent =
+              eocto.getHeader("User-Agent")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.setHeader(name, value)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">Sets a response header</p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.setHeader("Content-Type",
+              "application/json")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.deleteHeader(name)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">Removes a specific header</p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code
+              class="text-green-400">eocto.deleteHeader("X-Custom-Header")</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Local Variables -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-teal-500 to-teal-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          Local Variables
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.getLocal(key)</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Retrieves a local context variable
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local value =
+              eocto.getLocal("temp_data")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.setLocal(key, value)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Sets a local context variable
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.setLocal("temp_data",
+              "some_value")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.deleteLocal(key)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Removes a local context variable
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.deleteLocal("temp_data")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.getLocals()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns all local context variables
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local locals = eocto.getLocals()</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Encoding/Decoding -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          Data Encoding & JSON
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.decodeJSON(jsonString)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Parses JSON string into Lua table
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local data = eocto.decodeJSON('{"name":
+              "John", "age":
+              30}')</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.encodeJSON(table)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Converts Lua table to JSON string
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local json = eocto.encodeJSON({name =
+              "John", age = 30})</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.encodeBase32(data)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Encodes data using Base32 encoding
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local encoded =
+              eocto.encodeBase32("hello world")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.decodeBase32(encodedData)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">Decodes Base32 encoded data</p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local decoded =
+              eocto.decodeBase32(encoded)</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Database Operations -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+          </svg>
+          MongoDB Operations
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.getDataFromCollection(collection, query)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Retrieves documents from MongoDB collection
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local users =
+              eocto.getDataFromCollection("users", {active =
+              true})</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.setDataToCollection(collection, filter, update)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Updates documents in MongoDB collection
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.setDataToCollection("users", {id
+              = "123"}, {name = "John
+              Doe"})</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.delDataFromCollection(collection, filter)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Deletes documents from MongoDB collection
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.delDataFromCollection("users",
+              {inactive = true})</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.insertDataToCollection(collection, document)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Inserts new documents into MongoDB collection
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.insertDataToCollection("users",
+              {name = "Jane", email =
+              "jane@example.com"})</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Redis Operations -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-red-500 to-pink-500">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          Redis Cache Operations
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.getRedis(key)</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Retrieves a value from Redis cache
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local cachedData =
+              eocto.getRedis("user:123:profile")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.setRedis(key, value, expiration)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Stores a value in Redis cache with optional expiration
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.setRedis("user:123:profile",
+              userData, 3600)</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.deleteRedis(key)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Removes a key from Redis cache
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code
+              class="text-green-400">eocto.deleteRedis("user:123:session")</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Response & Rendering -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-violet-500 to-violet-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          Response & Rendering
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.setResponse(statusCode, data)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Sets HTTP response with status code and JSON data
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.setResponse(200, {success = true,
+              message = "OK"})</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.render(template, data)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Renders HTML template with provided data
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.render("user/profile", {user =
+              userData, title =
+              "Profile"})</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.renderJson(data)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Renders JSON response directly
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.renderJson({status = "success",
+              data = results})</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Utility Functions -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-cyan-500 to-cyan-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          Utility Functions
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.getUUID()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Generates a unique UUID v4 identifier
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local uuid = eocto.getUUID()</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Communication Functions -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-pink-500 to-rose-500">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+          Communication Functions
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            eocto.sendWhatsAppMessage(options)
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Sends WhatsApp messages via Twilio integration
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.sendWhatsAppMessage({to =
+              "+1234567890", message = "Hello
+              from Octopus!"})</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WebSocket Functions -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-slate-500 to-slate-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+          </svg>
+          WebSocket Support
+        </h2>
+      </div>
+      <div class="p-6">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            WebSocket Route Configuration
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Octopus supports WebSocket connections through route configuration.
+            WebSocket routes are automatically handled with session management
+            and client tracking.
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              -- WebSocket routes are configured in module configuration<br />
+              -- and provide real-time bidirectional communication<br />
+              -- with automatic client management and broadcasting
+            </code>
+          </div>
+          <div class="mt-3">
+            <span class="px-2 py-1 text-xs text-blue-800 bg-blue-100 rounded">
+              Real-time Communication
+            </span>
+            <span
+              class="px-2 py-1 ml-2 text-xs text-green-800 bg-green-100 rounded">
+              Client Management
+            </span>
+            <span
+              class="px-2 py-1 ml-2 text-xs text-purple-800 bg-purple-100 rounded">
+              Broadcasting
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Route Configuration -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-amber-500 to-amber-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m-6 3a2 2 0 100-4 2 2 0 000 4zm12 2a2 2 0 100-4 2 2 0 000 4z" />
+          </svg>
+          Route & Module Configuration
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            Pre-check Scripts
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Routes can have pre-check scripts that execute before the main route
+            handler. These scripts are defined in the route configuration and
+            run as middleware.
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              -- Pre-check scripts are executed as middleware<br />
+              -- and can modify request context, validate data,<br />
+              -- or perform authentication checks
+            </code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            Static File Serving
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Octopus automatically configures static file serving for each
+            module, including CSS, JavaScript, images, fonts, and icons.
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              -- Static paths are automatically configured:<br />
+              -- /static, /css, /js, /img, /images, /fonts, /icons
+            </code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            Session & CSRF Integration
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            All routes automatically include session management and CSRF
+            protection middleware for security.
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              -- Sessions and CSRF tokens are automatically<br />
+              -- managed for all routes and available in templates
+            </code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="pt-8 mt-12 text-center border-t border-slate-200">
+    <div class="flex items-center justify-center mb-4 space-x-4">
+      <span
+        class="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-800 bg-blue-100 rounded-full">
+        Lua Integration
+      </span>
+      <span
+        class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-slate-100 text-slate-800">
+        Server-Side Scripting
+      </span>
+      <span
+        class="inline-flex items-center px-3 py-1 text-sm font-medium text-green-800 bg-green-100 rounded-full">
+        Dynamic Configuration
+      </span>
+      <span
+        class="inline-flex items-center px-3 py-1 text-sm font-medium text-purple-800 bg-purple-100 rounded-full">
+        WebSocket Support
+      </span>
+    </div>
+    <p class="text-sm text-slate-600">
+      All functions are available within the
+      <code class="px-2 py-1 rounded bg-slate-100 text-slate-800">eocto</code>
+      global table in your Lua scripts.
+    </p>
+    <p class="mt-2 text-xs text-slate-500">
+      Octopus Server • Eocto 0.23.1.25 • Lua API Documentation
+    </p>
+  </div>
+</div>

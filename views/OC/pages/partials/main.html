@@ -1,0 +1,132 @@
+<div class="flex flex-col items-center flex-1 gap-3 p-6 mx-auto overflow-y-auto border border-blue-200 rounded-lg shadow-lg max-w-8/12 bg-gradient-to-br from-blue-50 to-indigo-100 ">
+      <h1 class="text-3xl font-bold text-center underline">
+        Octopus 2025 &reg; &copy;
+      </h1>
+      <h1 class="text-2xl font-bold text-center">
+        High-Performance Web Server Built with GoLang and Fiber
+      </h1>
+      <div class="flex flex-col mx-auto text-pretty">
+        <div class="">
+          <span class="font-semibold">Octopus</span> is a modern,
+          high-performance web server designed for speed, scalability, and ease
+          of development. Built using
+          <span class="font-semibold">Go (Golang)</span> and the
+          <span class="font-semibold">Fiber</span> framework, Octopus leverages
+          the efficiency of Go's concurrency model and Fiber's Express.js-like
+          simplicity to deliver a robust backend solution for web applications,
+          APIs, and microservices. What sets Octopus apart is its deep integration of Lua scripting, allowing dynamic server logic customization without recompilation.
+          <br/>
+          <div class="mt-4">
+            By embedding Lua as a first-class scripting language, Octopus enables developers to:
+          </div>
+          <div >
+          <ul class="ml-4 list-disc">
+            <li>Modify request/response handling on the fly</li>
+            <li>Implement custom middleware logic without restarting the server</li>
+            <li>Execute data transformations, validations, and routing rules via Lua scripts</li>
+            <li>Seamlessly map Go functions to Lua for hybrid Go-Lua workflows</li>
+          </ul>
+          </div>
+          <div>This unique combination of Go's raw performance and Lua's runtime flexibility makes Octopus ideal for API gateways, microservices, real-time systems, and configurable web backends.</div>
+        </div>
+        <div class="">
+          With its lightweight architecture and minimal resource footprint,
+          Octopus is ideal for developers seeking a fast, reliable, and scalable
+          server that maintains low latency even under heavy workloads.
+        </div>
+        <hr />
+        <h1 class="mt-4 text-2xl font-bold text-left">Why GoLang, Fiber, and Lua?</h1>
+        <ol class="ml-4 list-decimal">
+          <li>
+            <span class="font-semibold">Go + Fiber: The Performance Foundation.</span>
+            <br />
+            <ul class="ml-8 list-disc">
+              <li>
+                Go's Efficiency: Compiled to machine code, Go eliminates
+                interpreter overhead, making it significantly faster than
+                interpreted languages (e.g., Python, Ruby, PHP).
+              </li>
+              <li>
+                Fiber's Optimized HTTP Engine: Built on Fasthttp, Fiber handles 100K+ requests/sec with minimal latency.
+              </li>
+              <li>
+                Fiber's Optimized Routing: Built on Fasthttp, Fiber outperforms
+                traditional Go HTTP servers (like net/http) in request handling
+                and throughput.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span class="font-semibold">Built for Concurrency</span>
+            <br />
+            <ul class="ml-8 list-disc">
+              <li>
+                Goroutines: Lightweight threads allow Octopus to handle
+                thousands of concurrent connections without performance
+                degradation.
+              </li>
+              <li>
+                No Blocking I/O: Non-blocking operations ensure smooth handling
+                of high-traffic loads.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span class="font-semibold">Developer-Friendly Syntax</span>
+            <br />
+            <ul class="ml-8 list-disc">
+              <li>
+                Fiber's Express-like API: Developers familiar with
+                Node.js/Express can transition seamlessly to Fiber.
+              </li>
+              <li>
+                Minimal Boilerplate: Less code for routing, middleware, and
+                request handling compared to standard Go HTTP servers.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span class="font-semibold">Scalability & Microservices-Ready</span>
+            <br />
+            <ul class="ml-8 list-disc">
+              <li>
+                Stateless Design: Easy horizontal scaling with Kubernetes,
+                Docker, or cloud deployments.
+              </li>
+              <li>
+                Efficient Memory Usage: Lower RAM consumption than Node.js or
+                Java-based servers.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span class="font-semibold">Built-in Features for Modern Web Apps</span>
+            <br />
+            <ul class="ml-8 list-disc">
+              <li>WebSocket Support: Real-time bidirectional communication.</li>
+              <li>
+                Middleware Ecosystem: Built-in and third-party middleware for
+                logging, CORS, JWT auth, and rate-limiting.
+              </li>
+              <li>
+                Easy JSON Handling: Native Go struct binding for API
+                development.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span class="font-semibold">Embedded Lua: The Dynamic Layer</span>
+            <br/>
+            <ul class="ml-8 list-disc">
+                Runtime Scripting: Modify server behavior without recompiling Go.
+            </ul>
+            <ul class="ml-8 list-disc">
+                Go-Lua Interoperability: Call Go functions from Lua and vice versa.
+            </ul>
+            <ul class="ml-8 list-disc">
+                Sandboxed Execution: Secure Lua environments prevent unsafe operations.
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </div>
