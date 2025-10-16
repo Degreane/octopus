@@ -60,8 +60,8 @@ func SendWhatsAppMessage(toNumber, message string) error {
 	toNumber = fmt.Sprintf("whatsapp:%s", toNumber)
 	params := &api.CreateMessageParams{}
 	// params.SetMessagingServiceSid("HX5f78dc700628e01aec1970ce264506d5")
-	params.SetMessagingServiceSid("MG20d448746827f963a5b9e32c243f5b10")
-	params.SetContentSid("HXb00a2452de987a7934b9e2bd0fa72bfe")
+	//params.SetMessagingServiceSid("MG20d448746827f963a5b9e32c243f5b10")
+	//params.SetContentSid("HXb00a2452de987a7934b9e2bd0fa72bfe")
 	cv, err := json.Marshal(map[string]interface{}{
 		"1": message,
 	})
