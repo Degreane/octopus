@@ -275,7 +275,11 @@ func Script(luaFile string, settings config.ModulesConfig, moduleBasePath ...str
 				L.Push(lua.LNumber(tstamp))
 				return 1
 			}))
-
+			// FileSystem functionalities
+			eoctoTable.RawSetString("getCWD", L.NewFunction(utilities.GetCWD(c)))
+			eoctoTable.RawSetString("resetWD", L.NewFunction(utilities.ResetWD(c)))
+			eoctoTable.RawSetString("setWD", L.NewFunction(utilities.SetWD(c)))
+			eoctoTable.RawSetString("listFiles", L.NewFunction(utilities.ListFiles(c)))
 			// Set the eocto table a a global
 			L.SetGlobal("eocto", eoctoTable)
 			c.Locals("luaState", L)

@@ -1198,6 +1198,68 @@ local localPath = settings.LocalPath</code>
     </div>
   </div>
 
+    <!-- File System Functions -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-sky-500 to-sky-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 7l9-4 9 4-9 4-9-4zm0 5l9 4 9-4m-9 4v6" />
+          </svg>
+          File System
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.getCWD()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns the current working directory for this session. The value is cached per-session and reflects the directory used by other file operations.
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local cwd = eocto.getCWD()<br/>print("cwd:", cwd)</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.resetWD()</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Resets the session working directory to the server's current process working directory.
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.resetWD()</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.setWD(path)</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Sets the session working directory to the provided absolute or relative path. The path must exist and be a directory.
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">eocto.setWD("/var/www/project")</code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.listFiles([path])</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Returns a table of file and directory names within the given path. If no path is provided, it lists items in the session working directory; if that is unset, it falls back to the server's current process working directory.
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">-- List files in session working directory<br/>local files = eocto.listFiles()<br/>-- Or list files in a specific directory<br/>local etc = eocto.listFiles("/etc")</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
   <!-- Footer -->
   <div class="pt-8 mt-12 text-center border-t border-slate-200">
     <div class="flex items-center justify-center mb-4 space-x-4">

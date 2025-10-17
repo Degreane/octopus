@@ -50,6 +50,36 @@ function eocto.deleteCookie(name) end
 ---Clear all cookies
 function eocto.clearAllCookies() end
 
+---Add user to WebSocket room
+---@param roomName string Room name
+---@param userId? string Optional user ID
+---@return boolean success Success status
+function eocto.wsAddRoom(roomName, userId) end
+
+---Remove user from WebSocket room
+---@param roomName string Room name
+---@param userId? string Optional user ID
+---@return boolean success Success status
+function eocto.wsRemoveRoom(roomName, userId) end
+
+---Get all rooms for a user
+---@param userId? string Optional user ID
+---@return table rooms List of room names
+function eocto.wsGetUserRooms(userId) end
+
+---Check if user is in a specific room
+---@param roomName string Room name
+---@param userId? string Optional user ID
+---@return boolean inRoom True if user is in the room
+function eocto.wsIsUserInRoom(roomName, userId) end
+
+---Emit message to all users in a room
+---@param roomName string Room name
+---@param message string|table Message to emit
+---@param event? string Optional event name
+---@return boolean success Success status
+function eocto.wsEmitToRoom(roomName, message, event) end
+
 ---Get CSRF token
 ---@return string token CSRF token
 function eocto.getCsrfToken() end
@@ -211,14 +241,18 @@ function eocto.setResponse(status, body, headers) end
 function eocto.render(template, data) end
 
 ---Render JSON response
----@param status number HTTP status code
 ---@param data table Data to render as JSON
+---@param status number HTTP status code
 ---@return boolean success Success status
-function eocto.renderJson(data,status) end
+function eocto.renderJson(data, status) end
 
 ---Generate UUID v4
 ---@return string uuid Generated UUID
 function eocto.getUUID() end
+
+---Get module settings
+---@return table settings Table containing BasePath and LocalPath
+function eocto.getSettings() end
 
 ---Get Redis value
 ---@param key string Redis key
@@ -237,3 +271,18 @@ function eocto.setRedis(key, value, expiry) end
 ---@return boolean success Success status
 function eocto.deleteRedis(key) end
 
+---Get current timestamp in nanoseconds
+---@return number timestamp Unix timestamp in nanoseconds
+function eocto.timeStampNano() end
+
+---Get current timestamp in milliseconds
+---@return number timestamp Unix timestamp in milliseconds
+function eocto.timeStampMilli() end
+
+---Get current timestamp in seconds
+---@return number timestamp Unix timestamp in seconds
+function eocto.timeStamp() end
+
+---Get current working directory
+---@return string cwd Current working directory path
+function eocto.getCWD() end
