@@ -1257,6 +1257,16 @@ local localPath = settings.LocalPath</code>
             <code class="text-green-400">-- List files in session working directory<br/>local files = eocto.listFiles()<br/>-- Or list files in a specific directory<br/>local etc = eocto.listFiles("/etc")</code>
           </div>
         </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.readYamlFile(path)</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Reads a YAML file from the given path and returns its content as a JSON string. Returns <code>nil</code> on error (e.g., file not found or invalid YAML).
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local jsonStr = eocto.readYamlFile("/etc/sample.yaml")<br/>if jsonStr ~= nil then<br/>&nbsp;&nbsp;local data = eocto.decodeJSON(jsonStr)<br/>&nbsp;&nbsp;-- use data table here<br/>end</code>
+          </div>
+        </div>
       </div>
     </div>
 

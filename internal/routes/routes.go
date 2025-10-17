@@ -280,6 +280,8 @@ func Script(luaFile string, settings config.ModulesConfig, moduleBasePath ...str
 			eoctoTable.RawSetString("resetWD", L.NewFunction(utilities.ResetWD(c)))
 			eoctoTable.RawSetString("setWD", L.NewFunction(utilities.SetWD(c)))
 			eoctoTable.RawSetString("listFiles", L.NewFunction(utilities.ListFiles(c)))
+			// YAML utilities
+			eoctoTable.RawSetString("readYamlFile", L.NewFunction(utilities.ReadYamlFileLua))
 			// Set the eocto table a a global
 			L.SetGlobal("eocto", eoctoTable)
 			c.Locals("luaState", L)
