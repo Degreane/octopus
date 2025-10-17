@@ -49,6 +49,7 @@ type ModulesConfig struct {
 	Settings     []string `yaml:"Settings"`
 	BasePath     string   `yaml:"BasePath"`
 	LocalPath    string   `yaml:"LocalPath,omitempty"`
+	AbsolutePath string   `yaml:"AbsolutePath,omitempty"`
 	DB           string   `yaml:"db"`
 	Routes       []Route  `yaml:"Routes,omitempty"`
 }

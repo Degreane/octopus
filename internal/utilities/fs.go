@@ -55,7 +55,7 @@ func GetCWD(c *fiber.Ctx) lua.LGFunction {
 // success. On session access error, it returns nil.
 func ResetWD(c *fiber.Ctx) lua.LGFunction {
 	return func(L *lua.LState) int {
- 	sess, err := middleware.Store.Get(c)
+		sess, err := middleware.Store.Get(c)
 		if err != nil {
 			debug.Debug(debug.Error, fmt.Sprintf("Error getting session: %v", err))
 			L.Push(lua.LNil)
@@ -65,6 +65,81 @@ func ResetWD(c *fiber.Ctx) lua.LGFunction {
 		sess.Fresh()
 		_ = sess.Save()
 		return 0
+	}
+}
+func ResetProjectWD(c *fiber.Ctx, wd string) lua.LGFunction {
+	return func(L *lua.LState) int {
+		sess, err := middleware.Store.Get(c)
+		if err != nil {
+			debug.Debug(debug.Error, fmt.Sprintf("Error getting session: %v", err))
+			L.Push(lua.LNil)
+			return 0
+		}
+		_wd, err := os.Stat(wd)
+		if err != nil {
+			debug.Debug(debug.Error, fmt.Sprintf("Error setting wd to %s : %v", wd, err))
+			L.Push(lua.LNil)
+			return 0
+		}
+		if _wd.IsDir() == false {
+			debug.Debug(debug.Error, fmt.Sprintf("Error setting wd to %s : Not Directory", wd))
+			L.Push(lua.LNil)
+			return 0
+		}
+		__wd, err := filepath.Abs(_wd.Name())
+		if err != nil {
+			debug.Debug(debug.Error, fmt.Sprintf("Error setting wd to %s : %v", wd, err))
+			L.Push(lua.LNil)
+		}
+		os.Chdir(__wd)
+		sess.Set("eocto_cWd", __wd)
+		sess.Fresh()
+		_ = sess.Save()
+		return 0
+	}
+}
+
+func SetProjectWD(c *fiber.Ctx) lua.LGFunction {
+	return func(L *lua.LState) int {
+		sess, err := middleware.Store.Get(c)
+		if err != nil {
+			debug.Debug(debug.Error, fmt.Sprintf("Error getting session: %v", err))
+			L.Push(lua.LNil)
+			return 1
+		}
+		wd := L.ToString(1)
+		if wd == "" {
+			L.Push(lua.LNil)
+			return 1
+		}
+		fInfo, err := os.Stat(wd)
+		if err != nil {
+			debug.Debug(debug.Error, fmt.Sprintf("error changing dir to %q: %v", wd, err))
+			L.Push(lua.LNil)
+			return 1
+		}
+		if !fInfo.IsDir() {
+			debug.Debug(debug.Warning, fmt.Sprintf("path is not a directory: %q", wd))
+			L.Push(lua.LNil)
+			return 1
+		}
+
+		if abs, err := filepath.Abs(wd); err == nil {
+			sess.Set("eocto_cWd", abs)
+			sess.Fresh()
+			_ = sess.Save()
+			_ = os.Chdir(abs)
+			debug.Debug(debug.Info, fmt.Sprintf("Setting working directory to %s", abs))
+
+		} else {
+			sess.Set("eocto_cWd", wd)
+			sess.Fresh()
+			_ = sess.Save()
+			_ = os.Chdir(wd)
+			debug.Debug(debug.Info, fmt.Sprintf("Setting working directory to %s", wd))
+		}
+		return 0
+
 	}
 }
 

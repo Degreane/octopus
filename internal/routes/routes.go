@@ -173,9 +173,9 @@ func Script(luaFile string, settings config.ModulesConfig, moduleBasePath ...str
 			eoctoTable.RawSetString("getCsrfToken", L.NewFunction(utilities.GetCsrfToken(c)))
 			// locals
 			// L.SetGlobal("lua_getLocal", L.NewFunction(utilities.GetLocal(c)))
-			eoctoTable.RawSetString("getLocal", L.NewFunction(utilities.GetLocal(c)))
+			eoctoTable.RawSetString("getLocal", L.NewFunction(utilities.GetLocal(c, settings.BasePath)))
 			// L.SetGlobal("lua_setLocal", L.NewFunction(utilities.SetLocal(c)))
-			eoctoTable.RawSetString("setLocal", L.NewFunction(utilities.SetLocal(c)))
+			eoctoTable.RawSetString("setLocal", L.NewFunction(utilities.SetLocal(c, settings.BasePath)))
 			// L.SetGlobal("lua_deleteLocal", L.NewFunction(utilities.DeleteLocal(c)))
 			eoctoTable.RawSetString("deleteLocal", L.NewFunction(utilities.DeleteLocal(c)))
 			// L.SetGlobal("lua_getLocals", L.NewFunction(utilities.GetLocals(c)))
@@ -280,6 +280,8 @@ func Script(luaFile string, settings config.ModulesConfig, moduleBasePath ...str
 			eoctoTable.RawSetString("resetWD", L.NewFunction(utilities.ResetWD(c)))
 			eoctoTable.RawSetString("setWD", L.NewFunction(utilities.SetWD(c)))
 			eoctoTable.RawSetString("listFiles", L.NewFunction(utilities.ListFiles(c)))
+			eoctoTable.RawSetString("resetProjectPath", L.NewFunction(utilities.ResetProjectWD(c, settings.AbsolutePath)))
+			eoctoTable.RawSetString("setProjectWD", L.NewFunction(utilities.SetProjectWD(c)))
 			// YAML utilities
 			eoctoTable.RawSetString("readYamlFile", L.NewFunction(utilities.ReadYamlFileLua))
 			// CSV utilities

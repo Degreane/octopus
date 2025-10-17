@@ -3,3 +3,17 @@
 --- Created by fbanna.
 --- DateTime: 10/17/25 4:43 PM
 ---
+
+local pp = require('views.utils.prettyPrinter')
+
+local yamlFile = eocto.readYamlFile("config/modules.yaml")
+local yamlJson = eocto.decodeJSON(yamlFile)
+local projects = {}
+if yamlJson ~= nil and type(yamlJson) == "table" and #yamlJson > 0 then
+    for i, v in ipairs(yamlJson) do
+        if v["Name"] ~= nil then
+            projects[v["Name"]]= v
+        end
+    end
+end
+eocto.setLocal("projects",projects)

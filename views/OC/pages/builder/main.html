@@ -1,7 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
+{{template "OC/pages/builder/partials/header" .}}
+<body class="text-gray-900 bg-gray-50 min-h-screen grid grid-rows-[56px_1fr] lg:grid-cols-[260px_1fr_320px] lg:grid-rows-[56px_1fr] overflow-hidden font-sans">
 
-<body>
+<header class="col-span-3 flex items-center justify-between gap-3 px-3 bg-white border-b border-gray-200" role="banner">
+    <div class="flex items-center gap-3 font-semibold">
+        <button id="toggleLeft" aria-controls="leftPanel" aria-expanded="true" title="Toggle toolbars"
+                class="p-1 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <span aria-hidden="true">☰</span>
+            <span class="sr-only">Toggle toolbars panel</span>
+        </button>
+        <span>OC Project Builder</span>
+        <span class="text-[11px] text-white bg-blue-600 px-2 py-0.5 rounded-full">beta</span>
+        <div class="font-normal">
+            {{template "OC/pages/builder/partials/projectSelect" .}}
+        </div>
+    </div>
+    <div class="flex items-center gap-2" role="toolbar" aria-label="Builder actions">
+        <button class="hidden sm:inline-flex h-8 px-2 rounded-md border border-gray-200 bg-white text-gray-900 hover:bg-gray-50"
+                title="Undo">Undo
+        </button>
+        <button class="hidden sm:inline-flex h-8 px-2 rounded-md border border-gray-200 bg-white text-gray-900 hover:bg-gray-50"
+                title="Redo">Redo
+        </button>
+        <button class="hidden sm:inline-flex h-8 px-2 rounded-md border border-gray-200 bg-white text-gray-900 hover:bg-gray-50"
+                title="Preview">Preview
+        </button>
+        <button class="h-8 px-3 rounded-md border border-blue-600 bg-blue-600 text-white hover:bg-blue-700"
+                title="Save">Save
+        </button>
+        <button id="toggleRight"
+                class="h-8 px-3 rounded-md border border-gray-200 bg-white text-gray-900 hover:bg-gray-50"
+                title="Properties" aria-controls="rightPanel" aria-expanded="true">Props
+        </button>
+    </div>
+</header>
 
+<aside id="leftPanel"
+       class="lg:col-start-1 lg:row-start-2 border-r border-gray-200 bg-white min-w-0 flex flex-col h-[30vh] lg:h-auto"
+       role="complementary" aria-label="Toolbars panel">
+    <div class="px-3 py-2 font-semibold border-b border-gray-200">Toolbars</div>
+    <div class="p-3 overflow-auto">
+        <!-- Placeholder toolbars -->
+        <div class="grid grid-cols-2 gap-2">
+            <button class="h-8 px-2 rounded-md border border-gray-200 bg-white hover:bg-gray-50">Pointer</button>
+            <button class="h-8 px-2 rounded-md border border-gray-200 bg-white hover:bg-gray-50">Text</button>
+            <button class="h-8 px-2 rounded-md border border-gray-200 bg-white hover:bg-gray-50">Image</button>
+            <button class="h-8 px-2 rounded-md border border-gray-200 bg-white hover:bg-gray-50">Box</button>
+            <button class="h-8 px-2 rounded-md border border-gray-200 bg-white hover:bg-gray-50">Section</button>
+            <button class="h-8 px-2 rounded-md border border-gray-200 bg-white hover:bg-gray-50">Button</button>
+        </div>
+    </div>
+</aside>
+
+<main class="lg:col-start-2 lg:row-start-2 min-w-0 relative" role="main" aria-label="Current page content">
+    <div class="w-full h-full grid place-items-center">
+        <div class="bg-white w-full max-w-[1200px] h-full max-h-[800px] border border-gray-200 rounded-lg shadow-sm overflow-auto relative"
+             id="builderCanvas">
+            <div class="text-gray-500 grid place-items-center h-full text-center p-6">
+                <div>
+                    <div></div>
+                    <div class="font-semibold mb-1.5">No content yet</div>
+                    <div>Add elements from the left toolbar to start building your page.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<aside id="rightPanel"
+       class="lg:col-start-3 lg:row-start-2 border-l border-gray-200 bg-white min-w-0 flex flex-col h-[30vh] lg:h-auto"
+       role="complementary" aria-label="Properties panel">
+    <div class="px-3 py-2 font-semibold border-b border-gray-200">Properties</div>
+    <div class="p-3 overflow-auto">
+        <div class="grid gap-2.5">
+            <label class="grid gap-1">
+                <span class="text-xs text-gray-500">Selected element</span>
+                <input type="text" placeholder="None" disabled
+                       class="p-2 rounded-md border border-gray-200 bg-gray-100"/>
+            </label>
+            <label class="grid gap-1">
+                <span class="text-xs text-gray-500">Width</span>
+                <input type="number" placeholder="auto" class="p-2 rounded-md border border-gray-200"/>
+            </label>
+            <label class="grid gap-1">
+                <span class="text-xs text-gray-500">Height</span>
+                <input type="number" placeholder="auto" class="p-2 rounded-md border border-gray-200"/>
+            </label>
+        </div>
+    </div>
+</aside>
+
+<script>
+    (function () {
+        const left = document.getElementById('leftPanel');
+        const right = document.getElementById('rightPanel');
+        const toggleLeft = document.getElementById('toggleLeft');
+        const toggleRight = document.getElementById('toggleRight');
+
+        function setAria(btn, el) {
+            if (!btn || !el) return;
+            btn.setAttribute('aria-expanded', !el.classList.contains('hidden'));
+        }
+
+        function toggle(el, btn) {
+            if (!el) return;
+            el.classList.toggle('hidden');
+            setAria(btn, el);
+        }
+
+        toggleLeft && toggleLeft.addEventListener('click', function () {
+            toggle(left, toggleLeft);
+        });
+        toggleRight && toggleRight.addEventListener('click', function () {
+            toggle(right, toggleRight);
+        });
+
+        // On very small screens, start with right panel hidden for more space
+        if (window.matchMedia('(max-width: 640px)').matches) {
+            if (right) right.classList.add('hidden');
+            setAria(toggleRight, right);
+        }
+    })();
+</script>
 </body>
 </html>

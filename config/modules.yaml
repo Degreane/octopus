@@ -56,4 +56,16 @@
         - script: session.lua
       view: pages/ws
 
+    - method: GET
+      path: /builder
+      preCheck:
+        - script: builder/configs.lua
+      view: pages/builder/main
 
+    - method: GET
+      path: /builder/project
+      preCheck:
+        - script: builder/selectProject.lua
+      view: pages/builder/selectedProject
+
+- Name: "EzeKod Admin"

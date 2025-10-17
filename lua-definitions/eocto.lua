@@ -51,34 +51,40 @@ function eocto.deleteCookie(name) end
 function eocto.clearAllCookies() end
 
 ---Add user to WebSocket room
----@param roomName string Room name
----@param userId? string Optional user ID
+---@param userId string User ID
+---@param roomId string Room ID
 ---@return boolean success Success status
-function eocto.wsAddRoom(roomName, userId) end
+---@return string message Info message
+function eocto.wsAddRoom(userId, roomId) end
 
 ---Remove user from WebSocket room
----@param roomName string Room name
----@param userId? string Optional user ID
+---@param userId string User ID
+---@param roomId string Room ID
 ---@return boolean success Success status
-function eocto.wsRemoveRoom(roomName, userId) end
+---@return string message Info message
+function eocto.wsRemoveRoom(userId, roomId) end
 
 ---Get all rooms for a user
----@param userId? string Optional user ID
+---@param userId string User ID
 ---@return table rooms List of room names
+---@return string message Info message
 function eocto.wsGetUserRooms(userId) end
 
 ---Check if user is in a specific room
----@param roomName string Room name
----@param userId? string Optional user ID
+---@param userId string User ID
+---@param roomId string Room ID
 ---@return boolean inRoom True if user is in the room
-function eocto.wsIsUserInRoom(roomName, userId) end
+---@return string message Info message
+function eocto.wsIsUserInRoom(userId, roomId) end
 
----Emit message to all users in a room
----@param roomName string Room name
----@param message string|table Message to emit
----@param event? string Optional event name
----@return boolean success Success status
-function eocto.wsEmitToRoom(roomName, message, event) end
+---Emit a message to all users in a specific room
+---@param roomId string Room ID
+---@param event string Event name
+---@param data any Data to send (string|number|boolean|table|nil)
+---@param excludeUsers? table Optional array of user IDs to exclude
+---@return number deliveredCount Number of clients that received the message
+---@return string message Info message
+function eocto.wsEmitToRoom(roomId, event, data, excludeUsers) end
 
 ---Get CSRF token
 ---@return string token CSRF token
@@ -286,3 +292,26 @@ function eocto.timeStamp() end
 ---Get current working directory
 ---@return string cwd Current working directory path
 function eocto.getCWD() end
+
+
+---Reset the session working directory to the server's current process working directory
+function eocto.resetWD() end
+
+---Set the session working directory
+---@param path string Absolute or relative directory path
+function eocto.setWD(path) end
+
+---List files and directories in a path or the current working directory
+---@param path? string Optional path to list; defaults to the session working directory
+---@return table|nil items Array of names or nil on error
+function eocto.listFiles(path) end
+
+---Read a YAML file and return its content as a JSON string
+---@param path string File path
+---@return string|nil json JSON string or nil on error
+function eocto.readYamlFile(path) end
+
+---Read a CSV file and return its content as a JSON string (array of objects)
+---@param path string File path
+---@return string|nil json JSON string or nil on error
+function eocto.readCsvFile(path) end

@@ -1,128 +1,81 @@
-// // (function () {
-// //     htmx.defineExtension('htmx-ensure', {
-// //         init: function (api) {
-// //             var self = this;
-// //             document.addEventListener('DOMContentLoaded', function () {
-// //                 self.processLoadEnsureElements();
-// //
-// //                 // Listen for DOM changes to handle dynamically added elements
-// //                 var observer = new MutationObserver(self.processLoadEnsureElements.bind(self));
-// //                 observer.observe(document.body, {childList: true, subtree: true});
-// //             });
-// //
-// //             // Add click event listener to document
-// //             document.addEventListener('click', this.handleClick.bind(this));
-// //         },
-// //
-// //         processLoadEnsureElements: function () {
-// //             document.querySelectorAll('[hx-ensure-load]').forEach(this.processElement.bind(this, 'hx-ensure-load'));
-// //         },
-// //
-// //         handleClick: function (event) {
-// //             var element = event.target.closest('[hx-ensure]');
-// //             if (element) {
-// //                 this.processElement('hx-ensure', element);
-// //             }
-// //         },
-// //
-// //         processElement: function (attrName, elt) {
-// //             var ensureAttr = elt.getAttribute(attrName);
-// //             if (ensureAttr) {
-// //                 var instructions = ensureAttr.split(',');
-// //                 instructions.forEach(function (instruction) {
-// //                     var [selector, actions] = instruction.trim().split(':');
-// //                     var target = document.querySelector(selector);
-// //
-// //                     if (target) {
-// //                         actions.split(';').forEach(function (action) {
-// //                             if (action.includes('s')) {
-// //                                 // Timed action
-// //                                 var [className, time] = action.split('s');
-// //                                 var remove = className.startsWith('!');
-// //                                 className = remove ? className.substring(1) : className;
-// //
-// //                                 setTimeout(function () {
-// //                                     if (remove) {
-// //                                         target.classList.remove(className);
-// //                                     } else {
-// //                                         target.classList.add(className);
-// //                                     }
-// //                                 }, parseInt(time) * 1000);
-// //                             } else {
-// //                                 // Immediate action
-// //                                 var remove = action.startsWith('!');
-// //                                 var className = remove ? action.substring(1) : action;
-// //
-// //                                 if (remove) {
-// //                                     target.classList.remove(className);
-// //                                 } else {
-// //                                     target.classList.add(className);
-// //                                 }
-// //                             }
-// //                         });
-// //                     }
-// //                 });
-// //             }
-// //         },
-// //
-// //         onEvent: function (name, evt) {
-// //             if (name === 'htmx:afterSettle') {
-// //                 this.processLoadEnsureElements();
-// //             }
-// //         }
-// //     });
-// //
-// // })();
-// //
 (function () {
     htmx.defineExtension('htmx-ensure', {
         init: function (api) {
             var self = this;
-            // document.addEventListener('htmx:afterSwap', function () {
-            //     self.processLoadEnsureElements();
-            //
-            //     // Listen for DOM changes to handle dynamically added elements
-            //     var observer = new MutationObserver(self.processLoadEnsureElements.bind(self));
-            //     observer.observe(document.body, {childList: true, subtree: true});
-            // });
+            document.addEventListener('DOMContentLoaded', function () {
+                self.processLoadEnsureElements();
 
-            // Add click event listener to document
+                // Listen for DOM changes to handle dynamically added elements
+                var observer = new MutationObserver(self.processLoadEnsureElements.bind(self));
+                observer.observe(document.body, {childList: true, subtree: true});
+                
+                // Handle custom triggers
+                var ensureObserver = new MutationObserver(function() {
+                    document.querySelectorAll('[hx-ensure]').forEach(function(el) {
+                        var triggerSpec = el.getAttribute("hx-ensure-trigger") || 'click';
+                        if (triggerSpec !== 'click' && !el.hasAttribute('data-ensure-listener')) {
+                            el.setAttribute('data-ensure-listener', 'true');
+                            el.addEventListener(triggerSpec, function(evt) {
+                                self.processElement('hx-ensure', el);
+                            });
+                        }
+                    });
+                });
+                ensureObserver.observe(document.body, {childList: true, subtree: true, attributes: true, attributeFilter: ['hx-ensure']});
+            });
+
+            // Add event listeners to document for hx-ensure elements
             document.addEventListener('click', this.handleClick.bind(this));
         },
 
         processLoadEnsureElements: function () {
-            console.log(`[htmx-ensure] processLoadEnsureElements`);
-            document.querySelectorAll('[hx-ensure-load]:not([data-ensure-processed])').forEach(this.processElement.bind(this, 'hx-ensure-load'));
+            document.querySelectorAll('[hx-ensure-load]').forEach(this.processElement.bind(this, 'hx-ensure-load'));
         },
 
         handleClick: function (event) {
             var element = event.target.closest('[hx-ensure]');
             if (element) {
-                this.processElement('hx-ensure', element);
+                var triggerSpec = element.getAttribute("hx-ensure-trigger") || 'click';
+                if (event.type === triggerSpec) {
+                    this.processElement('hx-ensure', element);
+                }
             }
         },
 
         processElement: function (attrName, elt) {
             var ensureAttr = elt.getAttribute(attrName);
             if (ensureAttr) {
-                console.group(`[htmx-ensure] ${attrName}`);
-                console.log(`Element:`);
-                console.log(elt)
-
-
                 var instructions = ensureAttr.split(',');
                 instructions.forEach(function (instruction) {
-                    console.log(`Instruction:`);
-                    console.log(instruction)
-                    var [selector, actions] = instruction.trim().split(':');
+                    var colonIndex = instruction.indexOf(':');
+                    if (colonIndex === -1) return;
+
+                    var selector = instruction.substring(0, colonIndex).trim();
+                    var actions = instruction.substring(colonIndex + 1).trim();
                     var target = document.querySelector(selector);
 
                     if (target) {
-                        console.log(`Target:`);
-                        console.log(target)
                         actions.split(';').forEach(function (action) {
                             var act = action.trim();
-                            // Support formats:
+
+                            // Check if it's an attribute operation (contains '=')
+                            if (act.includes('=')) {
+                                var attrMatch = act.match(/^(!?)([^=]+)=(.*)$/);
+                                if (attrMatch) {
+                                    var removeAttr = attrMatch[1] === '!';
+                                    var attrName = attrMatch[2].trim();
+                                    var attrValue = attrMatch[3].trim();
+
+                                    if (removeAttr) {
+                                        target.removeAttribute(attrName);
+                                    } else {
+                                        target.setAttribute(attrName, attrValue);
+                                    }
+                                }
+                                return;
+                            }
+
+                            // Support formats for classes:
                             //  - "className"          => add immediately
                             //  - "!className"         => remove immediately
                             //  - "className 3s"       => add after 3s
@@ -135,7 +88,6 @@
                                 var seconds = parseFloat(timedMatch[3]);
 
                                 setTimeout(function () {
-                                    console.log(`target: ${target.id},removeTimed: ${removeTimed}, classNameTimed: ${classNameTimed}, seconds: ${seconds}`)
                                     if (removeTimed) {
                                         target.classList.remove(classNameTimed);
                                     } else {
@@ -155,10 +107,6 @@
                         });
                     }
                 });
-                if(attrName === 'hx-ensure-load' ){
-                    elt.setAttribute('data-ensure-processed', 'true');
-                }
-                console.groupEnd();
             }
         },
 

@@ -5,9 +5,12 @@
 package utilities
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 
+	"github.com/degreane/octopus/internal/middleware"
+	"github.com/degreane/octopus/internal/utilities/debug"
 	"github.com/gofiber/contrib/socketio"
 	"github.com/gofiber/fiber/v2"
 	lua "github.com/yuin/gopher-lua"
@@ -83,21 +86,95 @@ func convertLuaValueToGo(v lua.LValue) interface{} {
 // Usage in Lua:
 //
 //	local value = getLocal("user_data")
-func GetLocal(c *fiber.Ctx) lua.LGFunction {
+func GetLocal(c *fiber.Ctx, basePath string) lua.LGFunction {
 	return func(L *lua.LState) int {
 		key := L.ToString(1)
-		val := c.Locals(key)
-		if val == nil {
-			log.Printf("Key %s not found in locals", key)
+		sess, err := middleware.Store.Get(c)
+		if err != nil {
+			debug.Debug(debug.Error, fmt.Sprintf("Error getting session: %v", err))
 			L.Push(lua.LNil)
 			return 1
 		}
-		L.Push(lua.LString(fmt.Sprintf("%v", val)))
+
+		// Retrieve the JSON string stored under basePath + "_" + key
+		raw := sess.Get(fmt.Sprintf("%s_%s", basePath, key))
+		if raw == nil {
+			debug.Debug(debug.Info, fmt.Sprintf("Key \"%s\" not found in session locals", key))
+			L.Push(lua.LNil)
+			return 1
+		}
+
+		var jsonStr string
+		switch v := raw.(type) {
+		case string:
+			jsonStr = v
+		case []byte:
+			jsonStr = string(v)
+		default:
+			// Fallback: if value isn't a JSON string, treat it as string
+			jsonStr = fmt.Sprintf("%v", v)
+		}
+
+		var decoded interface{}
+		if err := json.Unmarshal([]byte(jsonStr), &decoded); err != nil {
+			// If it's not valid JSON, return as plain string for robustness
+			debug.Debug(debug.Info, fmt.Sprintf("Session value for key '%s' is not JSON or unmarshal failed: %v", key, err))
+			L.Push(lua.LString(jsonStr))
+			return 1
+		}
+
+		// Convert decoded Go value into a corresponding lua.LValue
+		L.Push(convertGoToLua(L, decoded))
 		return 1
 	}
 }
+
+// convertGoToLua converts generic Go values (from JSON) into lua.LValue
+func convertGoToLua(L *lua.LState, v interface{}) lua.LValue {
+	switch val := v.(type) {
+	case nil:
+		return lua.LNil
+	case bool:
+		return lua.LBool(val)
+	case float64:
+		return lua.LNumber(val)
+	case float32:
+		return lua.LNumber(val)
+	case int:
+		return lua.LNumber(val)
+	case int64:
+		return lua.LNumber(val)
+	case int32:
+		return lua.LNumber(val)
+	case json.Number:
+		if f, err := val.Float64(); err == nil {
+			return lua.LNumber(f)
+		}
+		return lua.LString(val.String())
+	case string:
+		return lua.LString(val)
+	case []interface{}:
+		t := L.NewTable()
+		for i, item := range val {
+			// Lua arrays are 1-based
+			t.RawSetInt(i+1, convertGoToLua(L, item))
+		}
+		return t
+	case map[string]interface{}:
+		t := L.NewTable()
+		for k, item := range val {
+			t.RawSetString(k, convertGoToLua(L, item))
+		}
+		return t
+	default:
+		// Fallback to string representation
+		return lua.LString(fmt.Sprintf("%v", val))
+	}
+}
+
 func GetWsLocal(c *socketio.Websocket) lua.LGFunction {
 	return func(L *lua.LState) int {
+
 		key := L.ToString(1)
 		val := c.Locals(key)
 		if val == nil {
@@ -123,7 +200,7 @@ func GetWsLocal(c *socketio.Websocket) lua.LGFunction {
 // Usage in Lua:
 //
 //	setLocal("user_data", "123")
-func SetLocal(c *fiber.Ctx) lua.LGFunction {
+func SetLocal(c *fiber.Ctx, basePath string) lua.LGFunction {
 	return func(L *lua.LState) int {
 		key := L.ToString(1)
 		var value interface{}
@@ -146,6 +223,25 @@ func SetLocal(c *fiber.Ctx) lua.LGFunction {
 		// value := L.ToString(2)
 		// debug.Debug(debug.Important, fmt.Sprintf("Setting local key %s to value %+v", key, value))
 		c.Locals(key, value)
+		sess, err := middleware.Store.Get(c)
+		if err != nil {
+			debug.Debug(debug.Error, fmt.Sprintf("Error getting session: %v", err))
+			//log.Printf("Error getting session: %v", err)
+		} else {
+			debug.Debug(debug.Info, fmt.Sprintf("setting  session: %s", fmt.Sprintf("%s_%s", basePath, key)))
+			jsonBytes, mErr := json.Marshal(value)
+			if mErr != nil {
+				debug.Debug(debug.Error, fmt.Sprintf("Error marshaling value to JSON: %v", mErr))
+			} else {
+				sess.Set(fmt.Sprintf("%s_%s", basePath, key), string(jsonBytes))
+				sess.Fresh()
+				err = sess.Save()
+				if err != nil {
+					debug.Debug(debug.Error, fmt.Sprintf("Error saving session: %v", err))
+				}
+			}
+		}
+
 		L.Push(lua.LBool(true))
 		return 1
 	}

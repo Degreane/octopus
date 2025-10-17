@@ -1,0 +1,16 @@
+<label for="projectSelect" class="sr-only sm:not-sr-only text-xs text-gray-500 mr-1">Project</label>
+<select id="projectSelect" name="project"
+        class="h-8 min-w-[180px] max-w-[280px] rounded-md border border-gray-300 bg-white text-gray-900 text-sm px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        hx-get="{{$.basePath}}/builder/project"
+        hx-trigger="change"
+        hx-target="#builderCanvas"
+>
+    {{if $.projects}}
+        <option disabled selected>Select a project</option>
+        {{range $i, $name := $.projects}}
+            <option value="{{$i}}">{{$i}}</option>
+        {{end}}
+    {{else}}
+        <option disabled selected>No projects</option>
+    {{end}}
+</select>

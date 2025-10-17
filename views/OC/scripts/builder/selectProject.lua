@@ -3,3 +3,15 @@
 --- Created by fbanna.
 --- DateTime: 10/17/25 7:35 PM
 ---
+local pp = require('views.utils.prettyPrinter')
+local projects = eocto.getLocal("projects")
+if projects ~= nil then
+    pp.print(projects)
+end
+
+--local sessProjects=eocto.getSession("projects")
+--if sessProjects ~= nil then
+--    print("=====================")
+--    pp.print(sessProjects)
+--    print("^^^ Session Projects ^^^")
+--end

@@ -6,11 +6,13 @@ package utilities
 
 import (
 	"encoding/gob"
+	"encoding/json"
 	"fmt"
 	"log"
 	"time"
 
 	"github.com/degreane/octopus/internal/middleware"
+	"github.com/degreane/octopus/internal/utilities/debug"
 	"github.com/gofiber/fiber/v2"
 	lua "github.com/yuin/gopher-lua"
 )
@@ -46,25 +48,34 @@ func GetSession(c *fiber.Ctx) lua.LGFunction {
 		// 	log.Printf("Key: %s, Value: %v", key, sess.Get(key))
 		// }
 		key := L.ToString(1)
-		val := sess.Get(key)
-		switch v := val.(type) {
-		case string:
-			L.Push(lua.LString(v))
-		case float64:
-			L.Push(lua.LNumber(v))
-		case bool:
-			L.Push(lua.LBool(v))
-		case map[string]interface{}:
-			tbl := L.NewTable()
-			for k, mv := range v {
-				tbl.RawSetString(k, lua.LString(fmt.Sprintf("%v", mv)))
-			}
-			L.Push(tbl)
-		case nil:
+		raw := sess.Get(fmt.Sprintf("%s", key))
+		if raw == nil {
+			debug.Debug(debug.Info, fmt.Sprintf("Key \"%s\" not found in session locals", key))
 			L.Push(lua.LNil)
-		default:
-			L.Push(lua.LString(fmt.Sprintf("%v", v)))
+			return 1
 		}
+
+		var jsonStr string
+		switch v := raw.(type) {
+		case string:
+			jsonStr = v
+		case []byte:
+			jsonStr = string(v)
+		default:
+			// Fallback: if value isn't a JSON string, treat it as string
+			jsonStr = fmt.Sprintf("%v", v)
+		}
+
+		var decoded interface{}
+		if err := json.Unmarshal([]byte(jsonStr), &decoded); err != nil {
+			// If it's not valid JSON, return as plain string for robustness
+			debug.Debug(debug.Info, fmt.Sprintf("Session value for key '%s' is not JSON or unmarshal failed: %v", key, err))
+			L.Push(lua.LString(jsonStr))
+			return 1
+		}
+
+		// Convert decoded Go value into a corresponding lua.LValue
+		L.Push(convertGoToLua(L, decoded))
 		return 1
 	}
 }
@@ -109,21 +120,20 @@ func SetSession(c *fiber.Ctx) lua.LGFunction {
 		case lua.LTBool:
 			value = L.ToBool(2)
 		case lua.LTTable:
-			mapValue := make(map[string]interface{})
-			L.ToTable(2).ForEach(func(k, v lua.LValue) {
-				mapValue[k.String()] = v.String()
-			})
-			value = mapValue
+			value = convertLuaTableToGo(L.ToTable(2))
 		}
 		// log.Printf("Setting session key %s to value %+v", key, value)
-		sess.Set(key, value)
-		sess.Fresh()
-		err = sess.Save()
-		if err != nil {
-			log.Printf("Error saving session: %v", err)
-			return 0
+		jsonBytes, mErr := json.Marshal(value)
+		if mErr != nil {
+			debug.Debug(debug.Error, fmt.Sprintf("Error marshaling value to JSON: %v", mErr))
+		} else {
+			sess.Set(fmt.Sprintf("%s", key), string(jsonBytes))
+			sess.Fresh()
+			err = sess.Save()
+			if err != nil {
+				debug.Debug(debug.Error, fmt.Sprintf("Error saving session: %v", err))
+			}
 		}
-
 		return 0
 	}
 }

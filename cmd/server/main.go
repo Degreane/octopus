@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/degreane/octopus/config"
 	"github.com/degreane/octopus/internal/routes"
@@ -289,10 +290,19 @@ func main() {
 	// Iterate through all loaded modules and set up their respective routes
 	// Each module's routes are configured using the SetupRoutes function, which maps endpoints
 	// to the application. If route setup fails for any module, the server will terminate
+	cwd, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for _, module := range modules {
 		// logr.Info("Setting up routes for module: % +v", module)
 		// Set up the routes for the current module by registering them with the Fiber application
 		// This connects the module's handlers to specific HTTP endpoints
+		module.AbsolutePath, err = filepath.Abs(cwd)
+		if err != nil {
+			log.Fatal(err)
+		}
 		err := routes.SetupRoutes(app, module)
 		if err != nil {
 			// If routes cannot be set up for a module, the application cannot function correctly
