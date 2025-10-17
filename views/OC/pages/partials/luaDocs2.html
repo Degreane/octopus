@@ -1267,6 +1267,16 @@ local localPath = settings.LocalPath</code>
             <code class="text-green-400">local jsonStr = eocto.readYamlFile("/etc/sample.yaml")<br/>if jsonStr ~= nil then<br/>&nbsp;&nbsp;local data = eocto.decodeJSON(jsonStr)<br/>&nbsp;&nbsp;-- use data table here<br/>end</code>
           </div>
         </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">eocto.readCsvFile(path)</h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Reads a CSV file from the given path and returns its content as a JSON string representing an array of objects. The first row is treated as headers. Missing values are returned as empty strings. UTF-8 BOM is handled automatically. Returns <code>nil</code> on error (e.g., file not found or invalid CSV).
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">local jsonStr = eocto.readCsvFile("/etc/sample.csv")<br/>if jsonStr ~= nil then<br/>&nbsp;&nbsp;local rows = eocto.decodeJSON(jsonStr) -- rows is a Lua table (array of maps)<br/>&nbsp;&nbsp;-- access by header name, e.g., rows[1]["name"]<br/>end</code>
+          </div>
+        </div>
       </div>
     </div>
 

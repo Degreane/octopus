@@ -282,6 +282,8 @@ func Script(luaFile string, settings config.ModulesConfig, moduleBasePath ...str
 			eoctoTable.RawSetString("listFiles", L.NewFunction(utilities.ListFiles(c)))
 			// YAML utilities
 			eoctoTable.RawSetString("readYamlFile", L.NewFunction(utilities.ReadYamlFileLua))
+			// CSV utilities
+			eoctoTable.RawSetString("readCsvFile", L.NewFunction(utilities.ReadCsvFileLua))
 			// Set the eocto table a a global
 			L.SetGlobal("eocto", eoctoTable)
 			c.Locals("luaState", L)
