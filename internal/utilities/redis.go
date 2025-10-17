@@ -2,10 +2,11 @@ package utilities
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"time"
 
 	"github.com/degreane/octopus/internal/database"
+	"github.com/degreane/octopus/internal/utilities/debug"
 	lua "github.com/yuin/gopher-lua"
 )
 
@@ -17,7 +18,7 @@ func GetRedisValueLua(L *lua.LState) int {
 	// Get Redis client from the database package
 	redisClient := database.GetRedisClient()
 	if redisClient == nil {
-		log.Printf("Redis client not initialized")
+		debug.Debug(debug.Error, fmt.Sprintf("Redis client not initialized"))
 		L.Push(lua.LNil)
 		return 1
 	}
@@ -51,7 +52,7 @@ func SetRedisValueLua(L *lua.LState) int {
 	// Get Redis client from the database package
 	redisClient := database.GetRedisClient()
 	if redisClient == nil {
-		log.Printf("Redis client not initialized")
+		debug.Debug(debug.Error, fmt.Sprintf("Redis client not initialized"))
 		L.Push(lua.LBool(false))
 		return 1
 	}
@@ -68,7 +69,7 @@ func SetRedisValueLua(L *lua.LState) int {
 	}
 
 	if err != nil {
-		log.Printf("Error setting Redis key %s: %v", key, err)
+		debug.Debug(debug.Error, fmt.Sprintf("Error setting Redis key %s: %v", key, err))
 		L.Push(lua.LBool(false))
 		return 1
 	}
@@ -85,7 +86,7 @@ func DeleteRedisKeyLua(L *lua.LState) int {
 	// Get Redis client from the database package
 	redisClient := database.GetRedisClient()
 	if redisClient == nil {
-		log.Printf("Redis client not initialized")
+		debug.Debug(debug.Error, fmt.Sprintf("Redis client not initialized"))
 		L.Push(lua.LBool(false))
 		return 1
 	}
@@ -93,7 +94,7 @@ func DeleteRedisKeyLua(L *lua.LState) int {
 	ctx := context.Background()
 	_, err := redisClient.Del(ctx, key).Result()
 	if err != nil {
-		log.Printf("Error deleting Redis key %s: %v", key, err)
+		debug.Debug(debug.Error, fmt.Sprintf("Error deleting Redis key %s: %v", key, err))
 		L.Push(lua.LBool(false))
 		return 1
 	}

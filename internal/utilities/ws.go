@@ -2,8 +2,9 @@ package utilities
 
 import (
 	"encoding/json"
-	"log"
+	"fmt"
 
+	"github.com/degreane/octopus/internal/utilities/debug"
 	"github.com/gofiber/contrib/socketio"
 	"github.com/gofiber/fiber/v2"
 	lua "github.com/yuin/gopher-lua"
@@ -25,14 +26,14 @@ func WsAddRoom(c *fiber.Ctx) lua.LGFunction {
 
 		// Validate parameters
 		if userId == "" {
-			log.Printf("WsAddRoom: userId cannot be empty")
+			debug.Debug(debug.Warning, "WsAddRoom: userId cannot be empty")
 			L.Push(lua.LBool(false))
 			L.Push(lua.LString("userId cannot be empty"))
 			return 2
 		}
 
 		if roomId == "" {
-			log.Printf("WsAddRoom: roomId cannot be empty")
+			debug.Debug(debug.Warning, fmt.Sprintf("WsAddRoom: roomId cannot be empty"))
 			L.Push(lua.LBool(false))
 			L.Push(lua.LString("roomId cannot be empty"))
 			return 2
@@ -44,7 +45,7 @@ func WsAddRoom(c *fiber.Ctx) lua.LGFunction {
 		// Check if user exists in clients
 		_, exists := clients.GetClient(userId)
 		if !exists {
-			log.Printf("WsAddRoom: User %s not found in clients", userId)
+			debug.Debug(debug.Warning, fmt.Sprintf("WsAddRoom: User %s not found in clients", userId))
 			L.Push(lua.LBool(false))
 			L.Push(lua.LString("user not found"))
 			return 2
@@ -67,7 +68,7 @@ func WsAddRoom(c *fiber.Ctx) lua.LGFunction {
 		// Check if room already exists for this user
 		for _, existingRoom := range rooms {
 			if existingRoom == roomId {
-				log.Printf("WsAddRoom: User %s already in room %s", userId, roomId)
+				debug.Debug(debug.Info, fmt.Sprintf("WsAddRoom: User %s already in room %s", userId, roomId))
 				L.Push(lua.LBool(true))
 				L.Push(lua.LString("user already in room"))
 				return 2
@@ -84,7 +85,7 @@ func WsAddRoom(c *fiber.Ctx) lua.LGFunction {
 		roomKey := "room_" + roomId
 		clients.SetClientAttribute(userId, roomKey, true)
 
-		log.Printf("WsAddRoom: Successfully added user %s to room %s", userId, roomId)
+		debug.Debug(debug.Info, fmt.Sprintf("WsAddRoom: Successfully added user %s to room %s", userId, roomId))
 
 		// Return success
 		L.Push(lua.LBool(true))
@@ -147,7 +148,7 @@ func WsRemoveRoom(c *fiber.Ctx) lua.LGFunction {
 		roomKey := "room_" + roomId
 		clients.SetClientAttribute(userId, roomKey, nil)
 
-		log.Printf("WsRemoveRoom: Successfully removed user %s from room %s", userId, roomId)
+		debug.Debug(debug.Info, fmt.Sprintf("WsRemoveRoom: Successfully removed user %s from room %s", userId, roomId))
 
 		L.Push(lua.LBool(true))
 		L.Push(lua.LString("user removed from room successfully"))
@@ -263,7 +264,7 @@ func WSEmitToRoom(roomId string, event string, data interface{}, excludeUsers ..
 		}
 	}
 
-	log.Printf("Message emitted to room %s: %d clients received message", roomId, successCount)
+	debug.Debug(debug.Info, fmt.Sprintf("WSEmitToRoom: room=%s event=%s delivered=%d", roomId, event, successCount))
 	return successCount
 }
 
@@ -279,7 +280,7 @@ func sendDirectMessage(socket *socketio.Websocket, event string, data interface{
 		// Marshal to JSON string if it's a complex type
 		jsonBytes, err := json.Marshal(v)
 		if err != nil {
-			log.Printf("Error marshaling data for user %s: %v", userID, err)
+			debug.Debug(debug.Error, fmt.Sprintf("sendDirectMessage: marshal data failed user=%s error=%v", userID, err))
 			return false
 		}
 		dataStr = string(jsonBytes)
@@ -296,20 +297,20 @@ func sendDirectMessage(socket *socketio.Websocket, event string, data interface{
 	// Marshal the message to JSON
 	jsonData, err := json.Marshal(message)
 	if err != nil {
-		log.Printf("Error marshaling MessageObject for user %s: %v", userID, err)
+		debug.Debug(debug.Error, fmt.Sprintf("sendDirectMessage: marshal message failed user=%s event=%s error=%v", userID, event, err))
 		return false
 	}
 
 	// Check if socket is valid
 	if socket == nil {
-		log.Printf("Socket is nil for user %s", userID)
+		debug.Debug(debug.Error, fmt.Sprintf("sendDirectMessage: socket is nil user=%s event=%s", userID, event))
 		return false
 	}
 
 	// Send the message via WebSocket
 	socket.Emit(jsonData, socketio.TextMessage)
 
-	log.Printf("Message successfully sent to user %s: %s", userID, event)
+	debug.Debug(debug.Info, fmt.Sprintf("sendDirectMessage: sent user=%s event=%s size=%d", userID, event, len(jsonData)))
 	return true
 
 }

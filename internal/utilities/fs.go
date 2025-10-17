@@ -1,11 +1,12 @@
 package utilities
 
 import (
-	"log"
+	"fmt"
 	"os"
 	"path/filepath"
 
 	"github.com/degreane/octopus/internal/middleware"
+	"github.com/degreane/octopus/internal/utilities/debug"
 	"github.com/gofiber/fiber/v2"
 	lua "github.com/yuin/gopher-lua"
 )
@@ -28,7 +29,7 @@ func GetCWD(c *fiber.Ctx) lua.LGFunction {
 	return func(L *lua.LState) int {
 		sess, err := middleware.Store.Get(c)
 		if err != nil {
-			log.Printf("Error getting session: %v", err)
+			debug.Debug(debug.Error, fmt.Sprintf("Error getting session: %v", err))
 			L.Push(lua.LNil)
 			return 1
 		}
@@ -54,9 +55,9 @@ func GetCWD(c *fiber.Ctx) lua.LGFunction {
 // success. On session access error, it returns nil.
 func ResetWD(c *fiber.Ctx) lua.LGFunction {
 	return func(L *lua.LState) int {
-		sess, err := middleware.Store.Get(c)
+ 	sess, err := middleware.Store.Get(c)
 		if err != nil {
-			log.Printf("Error getting session: %v", err)
+			debug.Debug(debug.Error, fmt.Sprintf("Error getting session: %v", err))
 			L.Push(lua.LNil)
 			return 1
 		}
@@ -76,7 +77,7 @@ func ListFiles(c *fiber.Ctx) lua.LGFunction {
 		var wd string
 		sess, err := middleware.Store.Get(c)
 		if err != nil {
-			log.Printf("Error getting session: %v", err)
+			debug.Debug(debug.Error, fmt.Sprintf("Error getting session: %v", err))
 			L.Push(lua.LNil)
 			return 1
 		}
@@ -93,7 +94,7 @@ func ListFiles(c *fiber.Ctx) lua.LGFunction {
 		}
 		files, err := os.ReadDir(wd)
 		if err != nil {
-			log.Printf("error listing files for path %q: %v", wd, err)
+			debug.Debug(debug.Error, fmt.Sprintf("error listing files for path %q: %v", wd, err))
 			L.Push(lua.LNil)
 			return 1
 		}
@@ -113,7 +114,7 @@ func SetWD(c *fiber.Ctx) lua.LGFunction {
 	return func(L *lua.LState) int {
 		sess, err := middleware.Store.Get(c)
 		if err != nil {
-			log.Printf("Error getting session: %v", err)
+			debug.Debug(debug.Error, fmt.Sprintf("Error getting session: %v", err))
 			L.Push(lua.LNil)
 			return 1
 		}
@@ -124,12 +125,12 @@ func SetWD(c *fiber.Ctx) lua.LGFunction {
 		}
 		fInfo, err := os.Stat(wd)
 		if err != nil {
-			log.Printf("error changing dir to %q: %v", wd, err)
+			debug.Debug(debug.Error, fmt.Sprintf("error changing dir to %q: %v", wd, err))
 			L.Push(lua.LNil)
 			return 1
 		}
 		if !fInfo.IsDir() {
-			log.Printf("path is not a directory: %q", wd)
+			debug.Debug(debug.Warning, fmt.Sprintf("path is not a directory: %q", wd))
 			L.Push(lua.LNil)
 			return 1
 		}
@@ -138,13 +139,13 @@ func SetWD(c *fiber.Ctx) lua.LGFunction {
 			sess.Set("eocto_cWd", abs)
 			sess.Fresh()
 			_ = sess.Save()
-			log.Printf("Setting working directory to %s", abs)
+			debug.Debug(debug.Info, fmt.Sprintf("Setting working directory to %s", abs))
 
 		} else {
-			sess.Set("eocto_cWd", abs)
+			sess.Set("eocto_cWd", wd)
 			sess.Fresh()
 			_ = sess.Save()
-			log.Printf("Setting working directory to %s", wd)
+			debug.Debug(debug.Info, fmt.Sprintf("Setting working directory to %s", wd))
 		}
 		return 0
 
