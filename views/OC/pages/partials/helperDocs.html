@@ -33,7 +33,15 @@
           </li>
           <li class="flex items-center">
             <span class="w-2 h-2 mr-3 rounded-full bg-emerald-500"></span>
+            Type Checking & Validation
+          </li>
+          <li class="flex items-center">
+            <span class="w-2 h-2 mr-3 rounded-full bg-emerald-500"></span>
             Conditional Logic & Comparisons
+          </li>
+          <li class="flex items-center">
+            <span class="w-2 h-2 mr-3 rounded-full bg-emerald-500"></span>
+            Iteration & Loop Helpers
           </li>
           <li class="flex items-center">
             <span class="w-2 h-2 mr-3 rounded-full bg-emerald-500"></span>
@@ -575,6 +583,223 @@
               {{ "{{" }} $fieldID := uuid {{ "}}" }}<br/>
               &lt;label for="{{ "{{" }} $fieldID {{ "}}" }}"&gt;Email:&lt;/label&gt;<br/>
               &lt;input id="{{ "{{" }} $fieldID {{ "}}" }}" type="email" name="email"&gt;
+
+            </code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Type Checking Functions -->
+    <div
+      class="overflow-hidden bg-white border rounded-lg shadow-sm border-slate-200">
+      <div class="px-6 py-4 bg-gradient-to-r from-lime-500 to-lime-600">
+        <h2 class="flex items-center text-xl font-semibold text-white">
+          <svg
+            class="w-6 h-6 mr-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Type Checking Functions
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            isInt, isFloat, isNumeric
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Check if a string value represents an integer, float, or any numeric type
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              &lt;!-- Validate numeric input --&gt;<br/>
+              {{ "{{" }} $input := .UserInput {{ "}}" }}<br/>
+              {{ "{{" }} if isInt $input {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;div class="alert success"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;"{{ "{{" }} $input {{ "}}" }}" is a valid integer&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} $value := asInt $input {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Doubled: {{ "{{" }} multiplyInt $value 2 {{ "}}" }}&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&lt;/div&gt;<br/>
+              {{ "{{" }} else if isFloat $input {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;div class="alert info"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;"{{ "{{" }} $input {{ "}}" }}" is a float&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&lt;/div&gt;<br/>
+              {{ "{{" }} else if isNumeric $input {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;div class="alert info"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;"{{ "{{" }} $input {{ "}}" }}" is numeric&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&lt;/div&gt;<br/>
+              {{ "{{" }} else {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;div class="alert error"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;"{{ "{{" }} $input {{ "}}" }}" is not a number&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&lt;/div&gt;<br/>
+              {{ "{{" }} end {{ "}}" }}<br/><br/>
+              &lt;!-- Dynamic form validation --&gt;<br/>
+              &lt;form class="data-form"&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} range .FormFields {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="field-group"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label&gt;{{ "{{" }} .Label {{ "}}" }}&lt;/label&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type="text"<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name="{{ "{{" }} .Name {{ "}}" }}"<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value="{{ "{{" }} .Value {{ "}}" }}"<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class="{{ "{{" }} if isNumeric .Value {{ "}}" }}numeric-field{{ "{{" }} else {{ "}}" }}text-field{{ "{{" }} end {{ "}}" }}"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} if not (isNumeric .Value) {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="validation-error"&gt;Please enter a number&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} end {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br/>
+              &nbsp;&nbsp;{{ "{{" }} end {{ "}}" }}<br/>
+              &lt;/form&gt;
+
+            </code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            isBool
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Check if a string value represents a boolean ("true", "false", "1", "0")
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              &lt;!-- Boolean validation --&gt;<br/>
+              {{ "{{" }} $setting := .ConfigValue {{ "}}" }}<br/>
+              {{ "{{" }} if isBool $setting {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;div class="config-setting"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="setting-name"&gt;{{ "{{" }} .ConfigName {{ "}}" }}&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="setting-value boolean"&gt;{{ "{{" }} $setting {{ "}}" }}&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="setting-type"&gt;Boolean&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&lt;/div&gt;<br/>
+              {{ "{{" }} else {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;div class="error"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Invalid boolean value: {{ "{{" }} $setting {{ "}}" }}&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Expected: true, false, 1, or 0&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&lt;/div&gt;<br/>
+              {{ "{{" }} end {{ "}}" }}<br/><br/>
+              &lt;!-- Feature flags --&gt;<br/>
+              {{ "{{" }} range .FeatureFlags {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;div class="feature-flag"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;h4&gt;{{ "{{" }} .Name {{ "}}" }}&lt;/h4&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} if isBool .Enabled {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="status-badge {{ "{{" }} if eq .Enabled "true" {{ "}}" }}enabled{{ "{{" }} else {{ "}}" }}disabled{{ "{{" }} end {{ "}}" }}"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} .Enabled {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} else {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="status-badge error"&gt;Invalid&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} end {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;/div&gt;<br/>
+              {{ "{{" }} end {{ "}}" }}
+
+            </code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            isDate, isDatetime, isTime, isTimestamp, isTimestampWithTimezone
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Check if a string value represents various date/time formats
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              &lt;!-- Date format validation --&gt;<br/>
+              {{ "{{" }} $input := .DateInput {{ "}}" }}<br/>
+              &lt;div class="date-validator"&gt;<br/>
+              &nbsp;&nbsp;&lt;h4&gt;Validating: {{ "{{" }} $input {{ "}}" }}&lt;/h4&gt;<br/>
+              &nbsp;&nbsp;&lt;ul&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;li class="{{ "{{" }} if isDate $input {{ "}}" }}valid{{ "{{" }} else {{ "}}" }}invalid{{ "{{" }} end {{ "}}" }}"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date (YYYY-MM-DD): {{ "{{" }} if isDate $input {{ "}}" }}✓{{ "{{" }} else {{ "}}" }}✗{{ "{{" }} end {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;/li&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;li class="{{ "{{" }} if isDatetime $input {{ "}}" }}valid{{ "{{" }} else {{ "}}" }}invalid{{ "{{" }} end {{ "}}" }}"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DateTime (YYYY-MM-DDTHH:MM:SS): {{ "{{" }} if isDatetime $input {{ "}}" }}✓{{ "{{" }} else {{ "}}" }}✗{{ "{{" }} end {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;/li&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;li class="{{ "{{" }} if isTime $input {{ "}}" }}valid{{ "{{" }} else {{ "}}" }}invalid{{ "{{" }} end {{ "}}" }}"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time (HH:MM:SS): {{ "{{" }} if isTime $input {{ "}}" }}✓{{ "{{" }} else {{ "}}" }}✗{{ "{{" }} end {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;/li&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;li class="{{ "{{" }} if isTimestamp $input {{ "}}" }}valid{{ "{{" }} else {{ "}}" }}invalid{{ "{{" }} end {{ "}}" }}"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Timestamp (with microseconds): {{ "{{" }} if isTimestamp $input {{ "}}" }}✓{{ "{{" }} else {{ "}}" }}✗{{ "{{" }} end {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;/li&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;li class="{{ "{{" }} if isTimestampWithTimezone $input {{ "}}" }}valid{{ "{{" }} else {{ "}}" }}invalid{{ "{{" }} end {{ "}}" }}"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Timestamp with Timezone: {{ "{{" }} if isTimestampWithTimezone $input {{ "}}" }}✓{{ "{{" }} else {{ "}}" }}✗{{ "{{" }} end {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;/li&gt;<br/>
+              &nbsp;&nbsp;&lt;/ul&gt;<br/>
+              &lt;/div&gt;<br/><br/>
+              &lt;!-- Event scheduling --&gt;<br/>
+              {{ "{{" }} range .Events {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;div class="event-card"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;h3&gt;{{ "{{" }} .Title {{ "}}" }}&lt;/h3&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} if isTimestamp .StartTime {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} $ts := timestamp .StartTime {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="event-time"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="time-badge valid"&gt;{{ "{{" }} .StartTime {{ "}}" }}&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="unix-time"&gt;Unix: {{ "{{" }} $ts {{ "}}" }}&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} else {{ "}}" }}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="event-time error"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="time-badge invalid"&gt;Invalid timestamp: {{ "{{" }} .StartTime {{ "}}" }}&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ "{{" }} end {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;/div&gt;<br/>
+              {{ "{{" }} end {{ "}}" }}<br/><br/>
+              &lt;!-- Supported formats --&gt;<br/>
+              &lt;div class="format-guide"&gt;<br/>
+              &nbsp;&nbsp;&lt;h4&gt;Supported Date/Time Formats:&lt;/h4&gt;<br/>
+              &nbsp;&nbsp;&lt;ul&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;code&gt;isDate&lt;/code&gt;: "2025-01-17"&lt;/li&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;code&gt;isDatetime&lt;/code&gt;: "2025-01-17T14:30:00"&lt;/li&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;code&gt;isTime&lt;/code&gt;: "14:30:00"&lt;/li&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;code&gt;isTimestamp&lt;/code&gt;: "2025-01-17T14:30:00.123456"&lt;/li&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;code&gt;isTimestampWithTimezone&lt;/code&gt;: "2025-01-17T14:30:00.123456Z"&lt;/li&gt;<br/>
+              &nbsp;&nbsp;&lt;/ul&gt;<br/>
+              &lt;/div&gt;
+
+            </code>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-50">
+          <h3 class="mb-2 font-semibold text-slate-800">
+            formatIntegerWithCommas
+          </h3>
+          <p class="mb-3 text-sm text-slate-600">
+            Format an integer string with comma thousand separators (no decimals)
+          </p>
+          <div class="p-3 text-sm rounded bg-slate-800">
+            <code class="text-green-400">
+              &lt;!-- Format large integer strings --&gt;<br/>
+              {{ "{{" }} $population := "1234567890" {{ "}}" }}<br/>
+              &lt;div class="stat-card"&gt;<br/>
+              &nbsp;&nbsp;&lt;h3&gt;World Population&lt;/h3&gt;<br/>
+              &nbsp;&nbsp;&lt;p class="big-number"&gt;{{ "{{" }} formatIntegerWithCommas $population {{ "}}" }}&lt;/p&gt;<br/>
+              &nbsp;&nbsp;&lt;!-- Output: 1,234,567,890 --&gt;<br/>
+              &lt;/div&gt;<br/><br/>
+              &lt;!-- Format negative numbers --&gt;<br/>
+              {{ "{{" }} $deficit := "-987654321" {{ "}}" }}<br/>
+              &lt;div class="financial-stat"&gt;<br/>
+              &nbsp;&nbsp;&lt;span class="label"&gt;Deficit:&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&lt;span class="value negative"&gt;{{ "{{" }} formatIntegerWithCommas $deficit {{ "}}" }}&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&lt;!-- Output: -987,654,321 --&gt;<br/>
+              &lt;/div&gt;<br/><br/>
+              &lt;!-- Counter display --&gt;<br/>
+              {{ "{{" }} range .Counters {{ "}}" }}<br/>
+              &nbsp;&nbsp;&lt;div class="counter-widget"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;h4&gt;{{ "{{" }} .Name {{ "}}" }}&lt;/h4&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="count"&gt;{{ "{{" }} formatIntegerWithCommas (asString .Count) {{ "}}" }}&lt;/div&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="unit"&gt;{{ "{{" }} .Unit {{ "}}" }}&lt;/span&gt;<br/>
+              &nbsp;&nbsp;&lt;/div&gt;<br/>
+              {{ "{{" }} end {{ "}}" }}<br/><br/>
+              &lt;!-- Note: This function works with string inputs --&gt;<br/>
+              {{ "{{" }} $intValue := 1234567 {{ "}}" }}<br/>
+              &lt;p&gt;Formatted: {{ "{{" }} formatIntegerWithCommas (asString $intValue) {{ "}}" }}&lt;/p&gt;<br/>
+              &lt;!-- Output: Formatted: 1,234,567 --&gt;
 
             </code>
           </div>
@@ -1354,9 +1579,19 @@
             </div>
           </div>
           <div class="space-y-2">
+            <h4 class="font-semibold text-gray-800">Type Checking</h4>
+            <div class="space-y-1 text-sm text-gray-600">
+              <div><code class="px-1 bg-gray-100 rounded">isInt</code> / <code class="px-1 bg-gray-100 rounded">isFloat</code> - Check type</div>
+              <div><code class="px-1 bg-gray-100 rounded">isNumeric</code> - Check numeric</div>
+              <div><code class="px-1 bg-gray-100 rounded">isBool</code> - Check boolean</div>
+              <div><code class="px-1 bg-gray-100 rounded">isDate</code> / <code class="px-1 bg-gray-100 rounded">isTime</code> - Check date/time</div>
+            </div>
+          </div>
+          <div class="space-y-2">
             <h4 class="font-semibold text-gray-800">Utilities</h4>
             <div class="space-y-1 text-sm text-gray-600">
               <div><code class="px-1 bg-gray-100 rounded">uuid</code> - Generate UUID</div>
+              <div><code class="px-1 bg-gray-100 rounded">formatIntegerWithCommas</code> - Format integers</div>
             </div>
           </div>
         </div>
