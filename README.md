@@ -486,7 +486,8 @@ octopus/
 **GPL3**
 
 Copyright © 2025 Faysal AL-Banna
-Website: https://www.ezekod.com
+
+[//]: # (Website: https://www.ezekod.com)
 Email: degreane@gmail.com
 
 ---
@@ -505,3 +506,4 @@ For questions, issues, or feature requests, please open an issue on the GitHub r
 
 **Octopus Server • Eocto 0.23.1.25**
 *Configuration-First • Script-Powered • Performance-Optimized • Developer-Friendly*
+
