@@ -66,6 +66,6 @@
       path: /builder/project
       preCheck:
         - script: builder/selectProject.lua
-      view: pages/builder/selectedProject
+      view: pages/builder/hx/selectedProject
 
 - Name: "EzeKod Admin"

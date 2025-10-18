@@ -63,13 +63,29 @@ func convertLuaValueToGo(v lua.LValue) interface{} {
 	case lua.LTBool:
 		return bool(v.(lua.LBool))
 	case lua.LTTable:
-		// log.Printf("Lua Table ~~~~~~~~~~~~~~~~~~~~~~~~~~~\n%+v\n", v)
 		return convertLuaTableToGo(v.(*lua.LTable))
 	case lua.LTNil:
 		return nil
+	case lua.LTThread:
+		// Threads cannot be serialized; store a descriptive string to avoid failures
+		return v.String()
+	case lua.LTFunction:
+		// Functions cannot be serialized; stringify safely
+		return v.String()
+	case lua.LTUserData:
+		// Attempt to stringify userdata; if underlying value is set, use its fmt value
+		if ud, ok := v.(*lua.LUserData); ok {
+			if ud.Value != nil {
+				return fmt.Sprintf("%v", ud.Value)
+			}
+		}
+		return v.String()
+	case lua.LTChannel:
+		// Channels are not serializable; stringify
+		return v.String()
 	default:
-		// log.Printf("Lua NIL ~~~~~~~~~~~~~~~~~~~~~~~~~~~\n%+v\n", v)
-		return nil // Unsupported type
+		// Fallback for unsupported types: stringify to preserve information
+		return v.String()
 	}
 }
 
@@ -288,7 +304,7 @@ func SetWsLocal(c *socketio.Websocket) lua.LGFunction {
 // Usage in Lua:
 //
 //	local success, err = deleteLocal("user_data")
-func DeleteLocal(c *fiber.Ctx) lua.LGFunction {
+func DeleteLocal(c *fiber.Ctx, basePath string) lua.LGFunction {
 	return func(L *lua.LState) int {
 		key := L.ToString(1)
 		if key == "" {
@@ -298,6 +314,17 @@ func DeleteLocal(c *fiber.Ctx) lua.LGFunction {
 		}
 		c.Locals(key, nil)
 		L.Push(lua.LBool(true))
+		sess, err := middleware.Store.Get(c)
+		if err != nil {
+			debug.Debug(debug.Error, fmt.Sprintf("Error getting session: %v", err))
+		} else {
+			sess.Delete(fmt.Sprintf("%s_%s", basePath, key))
+			sess.Fresh()
+			err = sess.Save()
+			if err != nil {
+				debug.Debug(debug.Error, fmt.Sprintf("Error saving session: %v", err))
+			}
+		}
 		return 1
 	}
 }
@@ -330,13 +357,18 @@ func DeleteWsLocal(c *socketio.Websocket) lua.LGFunction {
 //	for k, v in pairs(allLocals) do
 //	    print(k, v)
 //	end
-func GetLocals(c *fiber.Ctx) lua.LGFunction {
+func GetLocals(c *fiber.Ctx, basePath string) lua.LGFunction {
 	return func(L *lua.LState) int {
 		localsTable := L.NewTable()
 
-		c.Context().VisitUserValuesAll(func(a1, a2 any) {
-			localsTable.RawSetString(fmt.Sprintf("%v", a1), lua.LString(fmt.Sprintf("%v", a2)))
+		// Iterate over all user values (locals) stored in fasthttp RequestCtx
+		c.Context().VisitUserValues(func(k []byte, v interface{}) {
+			key := string(k)
+			debug.Debug(debug.Info, fmt.Sprintf("Key: %s, Value: %+v", key, v))
+			// Preserve types when possible by converting Go values to Lua values
+			localsTable.RawSetString(key, convertGoToLua(L, v))
 		})
+
 		L.Push(localsTable)
 		return 1
 	}

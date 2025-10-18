@@ -5,7 +5,12 @@
 ---
 
 local pp = require('views.utils.prettyPrinter')
-
+pp.print(eocto.getLocals())
+eocto.deleteLocal("project")
+eocto.deleteLocal("projects")
+eocto.debug("warning","Project ")
+pp.print(eocto.getLocal("project"))
+eocto.debug("warning","Project ")
 local yamlFile = eocto.readYamlFile("config/modules.yaml")
 local yamlJson = eocto.decodeJSON(yamlFile)
 local projects = {}
@@ -16,4 +21,9 @@ if yamlJson ~= nil and type(yamlJson) == "table" and #yamlJson > 0 then
         end
     end
 end
-eocto.setLocal("projects",projects)
+--eocto.setLocal("projects",projects)
+eocto.setSession("FaysalBB","https://www.fiba.com")
+eocto.deleteSession("FaysalBB")
+eocto.setLocal("XFactor","https://www.xfactor.com")
+eocto.setLocal("XFactor","https://www.xfactor2.com")
+--eocto.deleteLocal("XFactor")

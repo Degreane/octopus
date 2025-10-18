@@ -177,9 +177,9 @@ func Script(luaFile string, settings config.ModulesConfig, moduleBasePath ...str
 			// L.SetGlobal("lua_setLocal", L.NewFunction(utilities.SetLocal(c)))
 			eoctoTable.RawSetString("setLocal", L.NewFunction(utilities.SetLocal(c, settings.BasePath)))
 			// L.SetGlobal("lua_deleteLocal", L.NewFunction(utilities.DeleteLocal(c)))
-			eoctoTable.RawSetString("deleteLocal", L.NewFunction(utilities.DeleteLocal(c)))
+			eoctoTable.RawSetString("deleteLocal", L.NewFunction(utilities.DeleteLocal(c, settings.BasePath)))
 			// L.SetGlobal("lua_getLocals", L.NewFunction(utilities.GetLocals(c)))
-			eoctoTable.RawSetString("getLocals", L.NewFunction(utilities.GetLocals(c)))
+			eoctoTable.RawSetString("getLocals", L.NewFunction(utilities.GetLocals(c, settings.BasePath)))
 			// headers
 			// L.SetGlobal("lua_getHeaders", L.NewFunction(utilities.GetHeaders(c)))
 			eoctoTable.RawSetString("getHeaders", L.NewFunction(utilities.GetHeaders(c)))

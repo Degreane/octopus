@@ -5,13 +5,50 @@
 ---
 local pp = require('views.utils.prettyPrinter')
 local projects = eocto.getLocal("projects")
-if projects ~= nil then
-    pp.print(projects)
+local project = {
+    ["proceed"] = true,
+    ["selected"] = {}
+}
+--[[
+type ModulesConfig struct {
+	Name         string   `yaml:"Name"`
+	Description  string   `yaml:"Description"`
+	Version      string   `yaml:"Version"`
+	Author       string   `yaml:"Author"`
+	Email        string   `yaml:"Email"`
+	Website      string   `yaml:"Website"`
+	License      string   `yaml:"License"`
+	Dependencies []string `yaml:"Dependencies"`
+	Settings     []string `yaml:"Settings"`
+	BasePath     string   `yaml:"BasePath"`
+	LocalPath    string   `yaml:"LocalPath,omitempty"`
+	AbsolutePath string   `yaml:"AbsolutePath,omitempty"`
+	DB           string   `yaml:"db"`
+	Routes       []Route  `yaml:"Routes,omitempty"`
+}
+]]
+
+
+
+if projects == nil or type(projects) ~= "table" then
+    project.proceed = false
 end
 
---local sessProjects=eocto.getSession("projects")
---if sessProjects ~= nil then
---    print("=====================")
---    pp.print(sessProjects)
---    print("^^^ Session Projects ^^^")
---end
+local query = eocto.getQueryParams()["project"] or nil
+if query == nil then
+    project.proceed = false
+else
+    for _project, value in pairs(projects) do
+        eocto.debug("info",string.format("Found Project %s (Queried for %s)",_project,query))
+        if _project == query then
+            project.selected=value
+        end
+    end
+end
+
+
+
+
+-- finally set local to project
+eocto.setLocal("project", project)
+

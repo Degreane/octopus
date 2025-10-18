@@ -124,6 +124,7 @@
     --text-4xl--line-height: calc(2.5 / 2.25);
     --text-9xl: 8rem;
     --text-9xl--line-height: 1;
+    --font-weight-light: 300;
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
@@ -787,6 +788,10 @@
     border-style: var(--tw-border-style);
     border-width: 0px;
   }
+  .border-y {
+    border-block-style: var(--tw-border-style);
+    border-block-width: 1px;
+  }
   .border-t {
     border-top-style: var(--tw-border-style);
     border-top-width: 1px;
@@ -854,6 +859,9 @@
   }
   .border-yellow-500 {
     border-color: var(--color-yellow-500);
+  }
+  .border-b-gray-200 {
+    border-bottom-color: var(--color-gray-200);
   }
   .bg-black {
     background-color: var(--color-black);
@@ -1340,6 +1348,10 @@
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
+  }
+  .font-light {
+    --tw-font-weight: var(--font-weight-light);
+    font-weight: var(--font-weight-light);
   }
   .font-medium {
     --tw-font-weight: var(--font-weight-medium);
